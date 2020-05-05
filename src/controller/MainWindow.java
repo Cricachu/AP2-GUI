@@ -33,13 +33,17 @@ import model.exceptions.NameException;
 import static java.awt.Color.BLACK;
 
 public class MainWindow implements Initializable {
+    @FXML private Button logOutButton;
     @FXML private Button newEventbtn;
     @FXML private ListView postList;
     @FXML private ScrollPane scrollPaneView;
     @FXML private HBox titleCentre;
+    @FXML private Label studentIDTitle;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+            studentIDTitle.setText("Welcome,student:"+view1Controller.userId);
 
            ArrayList<Post> allPosts= view1Controller.uni.getAllPosts();
             for(Post post:allPosts) {
@@ -120,6 +124,25 @@ public class MainWindow implements Initializable {
         window.setScene(scene);
         window.setY(10);
         window.setX(350);
+        window.show();
+    }
+
+    public void logOutButtonHandle(ActionEvent actionEvent) {
+        try {
+            openLogInWindow(actionEvent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openLogInWindow(ActionEvent event) throws IOException {
+        Parent mainWindow= FXMLLoader.load(getClass().getResource("/view/view_1.fxml"));
+        Scene scene= new Scene(mainWindow);
+        //get the stage information
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(scene);
+//        window.setY(10);
+//        window.setX(350);
         window.show();
     }
 }
