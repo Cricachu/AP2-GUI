@@ -23,13 +23,15 @@ public class view1Controller implements Initializable {
     @FXML private TextField nameField;
     @FXML private Label outputLabel;
 
-//    UniLink startup = new UniLink();
+
     static UniLink uni;
+    public static String userId;
+
 
     public void loginButtonHandle(ActionEvent actionEvent) {
-        String id= nameField.getText();
+        userId= nameField.getText();
         try{
-            if(uni.login(id)) {
+            if(uni.login(userId)) {
 //                outputLabel.setText("Welcome,"+ a);
                 changeToMainWindow(actionEvent);
             }
@@ -51,8 +53,8 @@ public class view1Controller implements Initializable {
 
     }
 
-    public void changeToMainWindow(ActionEvent event) throws IOException {
-        Parent mainWindow= FXMLLoader.load(getClass().getResource("/view/MainWindow.fxml"));
+    public static void changeToMainWindow(ActionEvent event) throws IOException {
+        Parent mainWindow= FXMLLoader.load(view1Controller.class.getResource("/view/MainWindow.fxml"));
         Scene scene= new Scene(mainWindow,800,800);
 
         //get the stage information
