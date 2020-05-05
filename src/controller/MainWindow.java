@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -27,6 +28,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.*;
+import model.Event;
 import model.exceptions.FormatException;
 import model.exceptions.NameException;
 
@@ -64,47 +66,40 @@ public class MainWindow implements Initializable {
                 buttons.setAlignment(Pos.CENTER);
                 Button reply= new Button();
                 reply.setText("Reply");
+
                 Button moreDetails= new Button();
                 moreDetails.setText("More Details");
-                buttons.getChildren().addAll(reply,moreDetails);
 
+                if(post instanceof Event) {
+                    bd.setStyle("-fx-background-color: #FFFFFF;");
+                    reply.setText("Join");
+                    viewEventDetails(moreDetails,post); //click "more details" button to view Event details
+
+                }else if(post instanceof Job) {
+                    bd.setStyle("-fx-background-color: #F6DCD7;");
+
+                } else {
+                    bd.setStyle("-fx-background-color: #B5C5C5;");
+                }
+
+                buttons.getChildren().addAll(reply,moreDetails);
                 buttons.setSpacing(20);
                 buttons.setPadding(new Insets(50));
 
 
 
-                //add content to border pane
+                //add all contents to border pane
                 bd.setLeft(rect);
                 bd.setCenter(details);
                 BorderPane.setAlignment(details,Pos.CENTER_LEFT);
                 bd.setRight(buttons);
 
 
-                //add borderpane to list item
+                //add border pane to list item
                 postList.getItems().add(bd);
 
             }
 
-//        //load content to scroll Pane
-//        //Add vbox to store all elements
-//        VBox vbox = new VBox();
-//        vbox.setSpacing(10);
-//        vbox.setPadding(new Insets(50));
-//
-//        //add data to the Vbox
-//        for (int i = 0; i <50 ; i++) {
-//            //wrap each data chunks in a hbox
-//            HBox postPanel= new HBox();
-//            postPanel.setPadding(new Insets(10,10,10,10));
-//            postPanel.setSpacing(10);
-//            Label label = new Label("Welcome!");
-//            TextField postDes= new TextField();
-//            postPanel.getChildren().addAll(label,postDes);
-//            postPanel.setAlignment(Pos.CENTER);
-//            //add the collection of hbox to vbox
-//            vbox.getChildren().add(postPanel);
-//        }
-//        scrollPaneView.setContent(vbox);
 
     }
 
@@ -130,11 +125,13 @@ public class MainWindow implements Initializable {
     public void logOutButtonHandle(ActionEvent actionEvent) {
         try {
             openLogInWindow(actionEvent);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    //Open log in Window
     public void openLogInWindow(ActionEvent event) throws IOException {
         Parent mainWindow= FXMLLoader.load(getClass().getResource("/view/view_1.fxml"));
         Scene scene= new Scene(mainWindow);
@@ -143,6 +140,46 @@ public class MainWindow implements Initializable {
         window.setScene(scene);
 //        window.setY(10);
 //        window.setX(350);
+        window.show();
+    }
+
+
+    //Click a button to open EventDetailsWindow
+    public void viewEventDetails(Button button,Post post) {
+
+
+        //Create handler for open event details button
+        EventHandler<ActionEvent> evn = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                try {
+                    openEventDetailsWindow(e,post);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        };
+        //set button on action
+        button.setOnAction(evn);
+    }
+
+
+
+    //open Event Details Window
+    public void openEventDetailsWindow(ActionEvent event,Post post) throws IOException {
+    FXMLLoader loader=new FXMLLoader();
+    loader.setLocation(getClass().getResource("/view/EventDetails.fxml"));
+    Parent eventWindow= loader.load();
+
+    Scene eventView= new Scene(eventWindow);
+
+         //access controller and call init method
+        EventDetailsController controller=loader.getController();
+        controller.initData(post);
+
+        //get the stage information
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(eventView);
         window.show();
     }
 }
