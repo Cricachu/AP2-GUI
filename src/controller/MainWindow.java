@@ -1,8 +1,11 @@
 package controller;
 
 import javafx.fxml.Initializable;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -30,6 +33,7 @@ import model.exceptions.NameException;
 import static java.awt.Color.BLACK;
 
 public class MainWindow implements Initializable {
+    @FXML private Button newEventbtn;
     @FXML private ListView postList;
     @FXML private ScrollPane scrollPaneView;
     @FXML private HBox titleCentre;
@@ -50,17 +54,27 @@ public class MainWindow implements Initializable {
                 Label details= new Label();
                 details.setText(post.getPostDetails());
 
+
                 //set buttons
+                HBox buttons= new HBox();
+                buttons.setAlignment(Pos.CENTER);
                 Button reply= new Button();
                 reply.setText("Reply");
                 Button moreDetails= new Button();
                 moreDetails.setText("More Details");
+                buttons.getChildren().addAll(reply,moreDetails);
+
+                buttons.setSpacing(20);
+                buttons.setPadding(new Insets(50));
+
+//                buttons.setCenter(moreDetails);
 
                 //add content to hbox
                 hbox.getChildren().add(rect);
                 hbox.getChildren().add(details);
-                hbox.getChildren().add(reply);
-                hbox.getChildren().add(moreDetails);
+                hbox.getChildren().add(buttons);
+//                hbox.getChildren().add(reply);
+//                hbox.getChildren().add(moreDetails);
 
                 //add hbox to list item
                 postList.getItems().add(hbox);
@@ -87,5 +101,24 @@ public class MainWindow implements Initializable {
 //        }
 //        scrollPaneView.setContent(vbox);
 
+    }
+
+    public void newEventHandle(ActionEvent actionEvent)  {
+        try {
+            openNewEventWindow(actionEvent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openNewEventWindow(ActionEvent event) throws IOException {
+        Parent mainWindow= FXMLLoader.load(getClass().getResource("/view/NewEventForm.fxml"));
+        Scene scene= new Scene(mainWindow);
+        //get the stage information
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(scene);
+        window.setY(10);
+        window.setX(350);
+        window.show();
     }
 }
