@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.exceptions.FormatException;
 
+import java.io.IOException;
+
 public class NewEventFormController {
     @FXML private Label messageLabel;
     @FXML private Button cancelButton;
@@ -40,5 +42,10 @@ public class NewEventFormController {
 
 
     public void cancelButtonHandle(ActionEvent actionEvent) {
+        try {
+            view1Controller.changeToMainWindow(actionEvent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

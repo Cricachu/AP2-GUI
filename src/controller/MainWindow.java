@@ -43,8 +43,8 @@ public class MainWindow implements Initializable {
 
            ArrayList<Post> allPosts= view1Controller.uni.getAllPosts();
             for(Post post:allPosts) {
-                HBox hbox = new HBox();
-                hbox.setSpacing(15);
+
+                BorderPane bd= new BorderPane();
 
                 //mockup image
                 Rectangle rect = new Rectangle(180,180);
@@ -53,7 +53,7 @@ public class MainWindow implements Initializable {
                 //set content of the post
                 Label details= new Label();
                 details.setText(post.getPostDetails());
-
+                details.setPadding(new Insets(0,0,0,10));
 
                 //set buttons
                 HBox buttons= new HBox();
@@ -67,17 +67,18 @@ public class MainWindow implements Initializable {
                 buttons.setSpacing(20);
                 buttons.setPadding(new Insets(50));
 
-//                buttons.setCenter(moreDetails);
 
-                //add content to hbox
-                hbox.getChildren().add(rect);
-                hbox.getChildren().add(details);
-                hbox.getChildren().add(buttons);
-//                hbox.getChildren().add(reply);
-//                hbox.getChildren().add(moreDetails);
 
-                //add hbox to list item
-                postList.getItems().add(hbox);
+                //add content to border pane
+                bd.setLeft(rect);
+                bd.setCenter(details);
+                BorderPane.setAlignment(details,Pos.CENTER_LEFT);
+                bd.setRight(buttons);
+
+
+                //add borderpane to list item
+                postList.getItems().add(bd);
+
             }
 
 //        //load content to scroll Pane

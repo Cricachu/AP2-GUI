@@ -81,6 +81,9 @@ public class view1Controller implements Initializable {
         Job j1= new Job("s1", "Move house", "Need someone to help move house", 200);
         uni.getAllPosts().add(j1);
 
+        Event e3= new Event("s3", "Concert", "Bowling for Soup", "Melbourne showground", "01/04/2022", 900);
+        uni.getAllPosts().add(e3);
+
         for(Post post: uni.getAllPosts()) {
             post.printDetails();
         }
