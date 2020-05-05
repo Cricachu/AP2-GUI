@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="461.0" prefWidth="797.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainWindow">
+<AnchorPane prefHeight="700.0" prefWidth="797.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainWindow">
    <children>
-      <VBox prefHeight="462.0" prefWidth="797.0" spacing="10.0" style="-fx-background-color: #ababab;">
+      <VBox prefHeight="700.0" prefWidth="797.0" spacing="10.0" style="-fx-background-color: #ababab;">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="730.0" style="-fx-background-color: white;">
                <children>
@@ -32,12 +37,40 @@
                     </menus>
                   </MenuBar>
                </children></HBox>
-            <HBox prefHeight="77.0" prefWidth="730.0" style="-fx-background-color: white;" />
-            <HBox fx:id="titleCentre" prefHeight="50.0" prefWidth="730.0" style="-fx-background-color: white;" />
-            <ScrollPane fx:id="scrollPaneView" prefHeight="251.0" prefWidth="798.0">
+            <HBox prefHeight="77.0" prefWidth="730.0" style="-fx-background-color: white;">
+               <children>
+                  <ToolBar prefHeight="78.0" prefWidth="797.0">
+                    <items>
+                      <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="103.0" text="Add New Event" />
+                        <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="103.0" text="Add New Sale" />
+                        <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="103.0" text="Add New Job" />
+                        <ChoiceBox prefHeight="39.0" prefWidth="136.0" />
+                        <ChoiceBox prefHeight="39.0" prefWidth="141.0" />
+                        <ChoiceBox prefHeight="39.0" prefWidth="141.0" />
+                    </items>
+                  </ToolBar>
+               </children></HBox>
+            <HBox fx:id="titleCentre" alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="730.0" style="-fx-background-color: white;">
+               <children>
+                  <Label prefHeight="27.0" prefWidth="128.0" text="UNILINK SYSTEM">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label prefHeight="27.0" prefWidth="128.0" text="Student ID: " />
+                  <Button alignment="CENTER" mnemonicParsing="false" text="Log out">
+                     <HBox.margin>
+                        <Insets left="430.0" />
+                     </HBox.margin>
+                  </Button>
+               </children></HBox>
+            <ScrollPane fx:id="scrollPaneView" prefHeight="480.0" prefWidth="798.0">
                <VBox.margin>
                   <Insets />
-               </VBox.margin></ScrollPane>
+               </VBox.margin>
+               <content>
+                  <ListView fx:id="postList" prefHeight="470.0" prefWidth="781.0" />
+               </content></ScrollPane>
          </children>
       </VBox>
    </children>

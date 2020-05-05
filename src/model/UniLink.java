@@ -3,9 +3,15 @@ package model;
 import model.exceptions.FormatException;
 import model.exceptions.NameException;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class UniLink {
 
-    public boolean login(String CurrentSessionId) throws Exception {
+    ArrayList<Post> allPosts=new ArrayList<Post>();
+
+
+    public static boolean login(String CurrentSessionId) throws Exception {
             boolean success=false;
 
                 if(CurrentSessionId.trim().length()==0) {
@@ -26,4 +32,7 @@ public class UniLink {
         }
 
 
+    public ArrayList<Post> getAllPosts() {
+        return allPosts;
+    }
 }

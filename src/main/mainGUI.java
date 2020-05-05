@@ -3,11 +3,18 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.stage.Stage;
+import model.*;
 
 import java.io.IOException;
 
 public class mainGUI extends Application {
+
+
     public static void main(String[] args) {
+
+
+
+        //launch GUI
         launch(args);
     }
 

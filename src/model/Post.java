@@ -16,7 +16,7 @@ public abstract  class Post {
         creatorID=userID;
         this.title=title;
         this.description=description;
-        this.status=Status.OPEN;
+        this.status= Status.OPEN;
     }
 
     //methods for overriden
@@ -58,8 +58,12 @@ public abstract  class Post {
     public String getCreatorId() {
         return creatorID;
     }
+    public String getDescription() {return description;}
 
     public void closePost() {
-        this.status=Status.CLOSE;
+        this.status= Status.CLOSE;
+    }
+    public void openPost() {
+        this.status=Status.OPEN;
     }
 }
