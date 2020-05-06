@@ -28,6 +28,7 @@ import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.*;
 import model.Event;
@@ -43,6 +44,7 @@ public class MainWindow implements Initializable {
     @FXML private ScrollPane scrollPaneView;
     @FXML private HBox titleCentre;
     @FXML private Label studentIDTitle;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -89,6 +91,7 @@ public class MainWindow implements Initializable {
                 if(post instanceof Event) {
                     bd.setStyle("-fx-background-color: #FFFFFF;");
                     reply.setText("Join");
+                    viewReplyMessageEvent(reply);
                     viewEventDetails(moreDetails,post); //click "more details" button to view Event details
 
                 }else if(post instanceof Job) {
@@ -159,6 +162,55 @@ public class MainWindow implements Initializable {
 //        window.setX(350);
         window.setTitle("Log In");
         window.show();
+    }
+
+    //  //Click a button to open reply message window
+    public void viewReplyMessageEvent(Button button) {
+        //Create handler for open event details button
+        EventHandler<ActionEvent> evn = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                try {
+                    //create a reply
+
+                    //open reply message
+                    openReplyMessageWindow(e);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        };
+        //set button on action
+        button.setOnAction(evn);
+    }
+
+    //open second window for reply message
+    public void openReplyMessageWindow(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader=new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/ReplyMessage.fxml"));
+        Parent messageWindow= loader.load();
+
+        Scene messageView= new Scene(messageWindow);
+
+        //get parent stage
+        Stage parent = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+
+        // New window (Stage)
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Reply Message");
+        newWindow.setScene(messageView);
+
+        // Specifies the modality for new window.
+        newWindow.initModality(Modality.WINDOW_MODAL);
+
+        // Specifies the owner Window (parent) for new window
+        newWindow.initOwner(parent);
+
+        //set position of new window
+        newWindow.setX(parent.getX()+parent.getWidth()/4);
+        newWindow.setY(parent.getY()+parent.getHeight()/4);
+        //run
+        newWindow.show();
     }
 
 
