@@ -34,6 +34,7 @@ import model.*;
 import model.Event;
 import model.exceptions.FormatException;
 import model.exceptions.NameException;
+import model.utilities.Status;
 
 import static java.awt.Color.BLACK;
 
@@ -50,75 +51,76 @@ public class MainWindow implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
             studentIDTitle.setText("Welcome,student:"+view1Controller.userId);
+            updateList();
 
-           ArrayList<Post> allPosts= view1Controller.uni.getAllPosts();
-            for(Post post:allPosts) {
+    }
 
-                BorderPane bd= new BorderPane();
+    public void updateList() {
+        ArrayList<Post> allPosts= view1Controller.uni.getAllPosts();
+        for(Post post:allPosts) {
+            BorderPane bd= new BorderPane();
 
-                //mockup image
-//                Rectangle rect = new Rectangle(180,180);
-//                rect.setFill(Color.GRAY);
-                Image photo= post.getPhoto();
-                ImageView image= new ImageView(photo);
-                image.setFitHeight(180);
-                image.setFitWidth(180);
-                image.setPreserveRatio(true);
+            //setup image
+            Image photo= post.getPhoto();
+            ImageView image= new ImageView(photo);
+            image.setFitHeight(180);
+            image.setFitWidth(180);
+            image.setPreserveRatio(true);
 
-                //set content of the post
-                Label details= new Label();
-                details.setText(post.getPostDetails());
-                details.setPadding(new Insets(0,0,0,10));
+            //set content of the post
+            Label details= new Label();
+            details.setText(post.getPostDetails());
+            details.setPadding(new Insets(0,0,0,10));
 
-                //set buttons
-                HBox buttons= new HBox();
-                buttons.setAlignment(Pos.CENTER);
+            //set buttons
+            HBox buttons= new HBox();
+            buttons.setAlignment(Pos.CENTER);
 
-                Button reply= new Button();
-                reply.setText("Reply");
-                    //post creator cannot reply to their own post
-                if(post.getCreatorId().compareTo(view1Controller.userId)==0) {
+            Button reply= new Button();
+            reply.setText("Reply");
+            //post creator cannot reply to their own post
+            if(post.getCreatorId().compareTo(view1Controller.userId)==0||post.getStatus()!= Status.OPEN) {
+                reply.setDisable(true);
+            }
+
+            Button moreDetails= new Button();
+            moreDetails.setText("More Details");
+            //only post creator can view more details of post
+            if(post.getCreatorId().compareTo(view1Controller.userId)!=0) {
+                moreDetails.setDisable(true);
+            }
+
+            if(post instanceof Event) {
+                bd.setStyle("-fx-background-color: #FFFFFF;");
+                reply.setText("Join");
+                viewReplyMessageEvent(reply,post); //click reply button to join the Event
+                viewEventDetails(moreDetails,post); //click "more details" button to view Event details
+
+                //user cannot reply to an event twice
+                if(((Event) post).getAttendees().contains(view1Controller.userId)) {
                     reply.setDisable(true);
                 }
 
-                Button moreDetails= new Button();
-                moreDetails.setText("More Details");
-                    //only post creator can view more details of post
-                if(post.getCreatorId().compareTo(view1Controller.userId)!=0) {
-                    moreDetails.setDisable(true);
-                }
+            }else if(post instanceof Job) {
+                bd.setStyle("-fx-background-color: #F6DCD7;");
 
-                if(post instanceof Event) {
-                    bd.setStyle("-fx-background-color: #FFFFFF;");
-                    reply.setText("Join");
-                    viewReplyMessageEvent(reply);
-                    viewEventDetails(moreDetails,post); //click "more details" button to view Event details
-
-                }else if(post instanceof Job) {
-                    bd.setStyle("-fx-background-color: #F6DCD7;");
-
-                } else {
-                    bd.setStyle("-fx-background-color: #B5C5C5;");
-                }
-
-                buttons.getChildren().addAll(reply,moreDetails);
-                buttons.setSpacing(20);
-                buttons.setPadding(new Insets(50));
-
-
-
-                //add all contents to border pane
-                bd.setLeft(image);
-                bd.setCenter(details);
-                BorderPane.setAlignment(details,Pos.CENTER_LEFT);
-                bd.setRight(buttons);
-
-
-                //add border pane to list item
-                postList.getItems().add(bd);
-
+            } else {
+                bd.setStyle("-fx-background-color: #B5C5C5;");
             }
 
+            buttons.getChildren().addAll(reply,moreDetails);
+            buttons.setSpacing(20);
+            buttons.setPadding(new Insets(50));
+
+            //add all contents to border pane
+            bd.setLeft(image);
+            bd.setCenter(details);
+            BorderPane.setAlignment(details,Pos.CENTER_LEFT);
+            bd.setRight(buttons);
+
+            //add border pane to list item
+            postList.getItems().add(bd);
+        }
 
     }
 
@@ -165,14 +167,18 @@ public class MainWindow implements Initializable {
     }
 
     //  //Click a button to open reply message window
-    public void viewReplyMessageEvent(Button button) {
+    public void viewReplyMessageEvent(Button button,Post post) {
         //Create handler for open event details button
         EventHandler<ActionEvent> evn = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e)
             {
                 try {
-                    //create a reply
+                    //create a reply for event with value =1
+                    Reply reply=new Reply(post.getID(),1,view1Controller.userId);
+                    post.handleReply(reply);
 
+                    //update mainWindow
+                    updateList();
                     //open reply message
                     openReplyMessageWindow(e);
                 } catch (IOException ioException) {
