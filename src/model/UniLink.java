@@ -1,5 +1,6 @@
 package model;
 
+import javafx.scene.image.Image;
 import model.exceptions.FormatException;
 import model.exceptions.NameException;
 
@@ -32,7 +33,7 @@ public class UniLink {
     }
 
 
-    public void createNewEvent(String userId,String title, String desc, String venue, String date, String capacity) throws Exception{
+    public void createNewEvent(String userId, String title, String desc, String venue, String date, String capacity, Image photo) throws Exception{
 
         addTextInfo(title);
         addTextInfo(desc);
@@ -41,6 +42,7 @@ public class UniLink {
         int capa=addCapacity(capacity) ;
 
         Event event= new Event(userId,title,desc,venue,date,capa);
+        event.setPhoto(photo);
         allPosts.add(event);
     }
 

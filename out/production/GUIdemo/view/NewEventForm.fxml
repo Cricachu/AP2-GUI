@@ -4,15 +4,16 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="421.0" prefWidth="471.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NewEventFormController">
+<AnchorPane prefHeight="482.0" prefWidth="475.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NewEventFormController">
    <children>
-      <BorderPane layoutY="-18.0" prefHeight="473.0" prefWidth="536.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane layoutY="-18.0" prefHeight="482.0" prefWidth="475.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <Label prefHeight="30.0" prefWidth="298.0" text="Enter details of the event below" BorderPane.alignment="CENTER">
                <BorderPane.margin>
@@ -24,7 +25,7 @@
             </Label>
          </top>
          <center>
-            <VBox alignment="TOP_CENTER" prefHeight="380.0" prefWidth="634.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" prefHeight="412.0" prefWidth="451.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox alignment="CENTER" prefHeight="60.0" prefWidth="601.0" spacing="10.0">
                      <children>
@@ -55,6 +56,23 @@
                         <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="88.0" text="Capacity" />
                         <TextField fx:id="capacityField" prefHeight="25.0" prefWidth="171.0" />
                      </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="83.0" prefWidth="476.0" spacing="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#uploadImageButtonPushed" prefHeight="25.0" prefWidth="94.0" text="Upload Image">
+                           <HBox.margin>
+                              <Insets left="22.0" />
+                           </HBox.margin>
+                        </Button>
+                        <ImageView fx:id="imageView" fitHeight="110.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="58.0" prefWidth="601.0" spacing="10.0">
                      <children>

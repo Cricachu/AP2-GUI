@@ -62,17 +62,15 @@ public class view1Controller implements Initializable {
         window.setScene(scene);
         window.setY(10);
         window.setX(350);
+        window.setTitle("UniLink dashboard");
         window.show();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        uni= new UniLink();
+    public void initData(UniLink uni) {
+        this.uni=uni;
         //hardcoded for testing
         Event e1= new Event("s1", "Concert", "My chemical Romance", "Melbourne showground", "01/04/2020", 50);
-        Event e2= new Event("s2", "Concert", "Bowling for Soup", "Melbourne showground", "01/04/2022", 900);
-        uni.getAllPosts().add(e1);
-        uni.getAllPosts().add(e2);
+         uni.getAllPosts().add(e1);
 
 
         Sale s1= new Sale("s1", "Violin", "Brand new violin", 200, 10);
@@ -87,5 +85,9 @@ public class view1Controller implements Initializable {
         for(Post post: uni.getAllPosts()) {
             post.printDetails();
         }
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
     }
 }

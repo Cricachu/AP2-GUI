@@ -135,6 +135,7 @@ public class MainWindow implements Initializable {
         window.setScene(scene);
         window.setY(10);
         window.setX(350);
+        window.setTitle("New Event");
         window.show();
     }
 
@@ -156,6 +157,7 @@ public class MainWindow implements Initializable {
         window.setScene(scene);
 //        window.setY(10);
 //        window.setX(350);
+        window.setTitle("Log In");
         window.show();
     }
 
@@ -196,6 +198,7 @@ public class MainWindow implements Initializable {
         //get the stage information
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(eventView);
+        window.setTitle("Event Details");
         window.show();
     }
 }

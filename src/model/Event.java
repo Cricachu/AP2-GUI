@@ -2,6 +2,7 @@ package model;
 
 import model.utilities.Status;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 
@@ -23,6 +24,8 @@ public class Event extends Post {
 		this.venue=venue;
 		this.capacity=capacity;
 	}
+
+
 	
 	//implement abstract methods
 	public  boolean handleReply(Reply reply) {

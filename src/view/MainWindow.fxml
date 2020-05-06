@@ -58,7 +58,7 @@
                      </HBox.margin>
                   </Label>
                   <Label fx:id="studentIDTitle" prefHeight="27.0" prefWidth="128.0" text="Student ID: " />
-                  <Button fx:id="logOutButton" alignment="CENTER" mnemonicParsing="false" text="Log out" onAction="#logOutButtonHandle">
+                  <Button fx:id="logOutButton" alignment="CENTER" mnemonicParsing="false" onAction="#logOutButtonHandle" text="Log out">
                      <HBox.margin>
                         <Insets left="430.0" />
                      </HBox.margin>
@@ -69,7 +69,7 @@
                   <Insets />
                </VBox.margin>
                <content>
-                  <ListView fx:id="postList" prefHeight="470.0" prefWidth="781.0" />
+                  <ListView fx:id="postList" prefHeight="470.0" prefWidth="795.0" />
                </content></ScrollPane>
          </children>
       </VBox>
