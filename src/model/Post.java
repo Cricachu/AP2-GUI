@@ -1,5 +1,6 @@
 package model;
 
+import javafx.scene.image.Image;
 import model.utilities.Status;
 
 import java.util.ArrayList;
@@ -9,14 +10,28 @@ public abstract  class Post {
     private String title;
     private String description;
     private String creatorID;
-    private ArrayList<Reply> replies= new ArrayList<Reply>();
+    private ArrayList<Reply> replies;
     private Status status;
+    private Image photo;
+    private String imageName;
 
     public Post(String userID, String title, String description) {
         creatorID=userID;
         this.title=title;
         this.description=description;
         this.status= Status.OPEN;
+       replies = new ArrayList<Reply>();
+       imageName="/images/default.jpeg";
+       photo=new Image(imageName);
+    }
+
+    public Post(String userID, String title, String description, Image photo) {
+        creatorID=userID;
+        this.title=title;
+        this.description=description;
+        this.status= Status.OPEN;
+        replies = new ArrayList<Reply>();
+        this.photo=photo;
     }
 
     //methods for overriden
@@ -39,6 +54,10 @@ public abstract  class Post {
 
 
     //accessors/mutators
+    public Image getPhoto(){
+        return photo;
+    }
+
     public ArrayList<Reply> getArrayReply() {
         return replies;
     }

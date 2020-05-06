@@ -2,6 +2,8 @@ package controller;
 
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -53,8 +55,13 @@ public class MainWindow implements Initializable {
                 BorderPane bd= new BorderPane();
 
                 //mockup image
-                Rectangle rect = new Rectangle(180,180);
-                rect.setFill(Color.GRAY);
+//                Rectangle rect = new Rectangle(180,180);
+//                rect.setFill(Color.GRAY);
+                Image photo= post.getPhoto();
+                ImageView image= new ImageView(photo);
+                image.setFitHeight(180);
+                image.setFitWidth(180);
+                image.setPreserveRatio(true);
 
                 //set content of the post
                 Label details= new Label();
@@ -64,11 +71,20 @@ public class MainWindow implements Initializable {
                 //set buttons
                 HBox buttons= new HBox();
                 buttons.setAlignment(Pos.CENTER);
+
                 Button reply= new Button();
                 reply.setText("Reply");
+                    //post creator cannot reply to their own post
+                if(post.getCreatorId().compareTo(view1Controller.userId)==0) {
+                    reply.setDisable(true);
+                }
 
                 Button moreDetails= new Button();
                 moreDetails.setText("More Details");
+                    //only post creator can view more details of post
+                if(post.getCreatorId().compareTo(view1Controller.userId)!=0) {
+                    moreDetails.setDisable(true);
+                }
 
                 if(post instanceof Event) {
                     bd.setStyle("-fx-background-color: #FFFFFF;");
@@ -89,7 +105,7 @@ public class MainWindow implements Initializable {
 
 
                 //add all contents to border pane
-                bd.setLeft(rect);
+                bd.setLeft(image);
                 bd.setCenter(details);
                 BorderPane.setAlignment(details,Pos.CENTER_LEFT);
                 bd.setRight(buttons);

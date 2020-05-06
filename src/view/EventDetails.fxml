@@ -13,14 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EventDetailsController">
    <children>
       <VBox layoutX="106.0" prefHeight="500.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="52.0" prefWidth="800.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="131.0" text="Back to main window" />
+                  <Button fx:id="backToMainWindow" mnemonicParsing="false" onAction="#clickBackToMainWindow" prefHeight="32.0" prefWidth="131.0" text="Back to main window" />
                   <Label alignment="CENTER" prefHeight="36.0" prefWidth="468.0" text="Event Details">
                      <font>
                         <Font size="19.0" />
@@ -36,7 +35,7 @@
             </HBox>
             <BorderPane prefHeight="247.0" prefWidth="800.0">
                <left>
-                  <ImageView fitHeight="167.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                  <ImageView fx:id="photo" fitHeight="167.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets left="20.0" />
                      </BorderPane.margin>
@@ -51,10 +50,11 @@
                       <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Upload Image" />
                         <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Close Event" />
                         <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Delete Event" />
-                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Edit Details" />
+                        <Button fx:id="editDetails" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Edit Details" />
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Save" />
                     </items>
                      <padding>
-                        <Insets left="150.0" />
+                        <Insets left="86.0" />
                      </padding>
                   </ToolBar>
                </bottom>
