@@ -30,7 +30,7 @@ public class Event extends Post {
 	//implement abstract methods
 	public  boolean handleReply(Reply reply) {
 		
-		String studentId=reply.getResponderId();
+		String studentId=reply.getResponderID();
 		if(!attendees.contains(studentId) && attendeesCount<capacity &&this.getStatus()== Status.OPEN) {
 			super.getArrayReply().add(reply);
 			attendees.add(studentId);

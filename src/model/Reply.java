@@ -22,7 +22,7 @@ public class Reply {
         return this.postID;
     }
 
-    public String getResponderId() {
+    public String getResponderID() {
         return this.responderID;
     }
 

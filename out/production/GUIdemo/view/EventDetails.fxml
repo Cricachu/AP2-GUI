@@ -59,9 +59,9 @@
                   </ToolBar>
                </bottom>
             </BorderPane>
-            <TableView prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="attendeeTable" prefHeight="200.0" prefWidth="200.0">
               <columns>
-                <TableColumn prefWidth="799.7538724887871" text="Attendees" />
+                <TableColumn fx:id="attendeeColumn" prefWidth="799.7538724887871" text="Attendees" />
               </columns>
             </TableView>
          </children>

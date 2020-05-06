@@ -52,7 +52,7 @@ public  String getReplyDetails() {
 			if(super.getArrayReply().size()>0) {
 
 				for (int i = super.getArrayReply().size()-1; i >=0; i--) {
-					offerHistory+= super.getArrayReply().get(i).getResponderId()+":"+ super.getArrayReply().get(i).getPostValue()+"\n";
+					offerHistory+= super.getArrayReply().get(i).getResponderID()+":"+ super.getArrayReply().get(i).getPostValue()+"\n";
 					historyCount++;
 					if(historyCount==5) break;
 				}
