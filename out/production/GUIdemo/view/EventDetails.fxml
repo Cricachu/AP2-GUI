@@ -47,11 +47,11 @@
                <bottom>
                   <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <items>
-                      <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Upload Image" />
+                      <Button fx:id="uploadImage" alignment="CENTER" mnemonicParsing="false" onAction="#uploadImagePushed" prefHeight="25.0" prefWidth="120.0" text="Upload Image" />
                         <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Close Event" />
                         <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Delete Event" />
                         <Button fx:id="editDetails" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Edit Details" />
-                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Save" />
+                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveButtonPushed" prefHeight="25.0" prefWidth="120.0" text="Save" />
                     </items>
                      <padding>
                         <Insets left="86.0" />

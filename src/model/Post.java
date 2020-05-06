@@ -58,6 +58,10 @@ public abstract  class Post {
         return photo;
     }
 
+    public void setPhoto(Image image) {
+        this.photo=image;
+    }
+
     public ArrayList<Reply> getArrayReply() {
         return replies;
     }
