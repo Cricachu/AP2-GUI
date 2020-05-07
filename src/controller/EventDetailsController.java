@@ -5,8 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -15,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Event;
 import model.Post;
@@ -106,6 +110,43 @@ public class EventDetailsController implements Initializable {
         }
     }
 
+    //open second window for edit event details
+    public void openEditWindow(ActionEvent event) throws IOException {
+        FXMLLoader loader=new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/editEventDetails.fxml"));
+        Parent editWindow= loader.load();
+
+        Scene editEvent= new Scene(editWindow);
+
+        //access controller and call init method
+        editEventDetailController controller=loader.getController();
+        controller.initData(this.event);
+
+        //get parent stage
+        Stage parent = (Stage) ((Node)event.getSource()).getScene().getWindow();
+
+        // New window (Stage)
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Edit Event ");
+        newWindow.setScene(editEvent);
+
+        // Specifies the modality for new window.
+        newWindow.initModality(Modality.WINDOW_MODAL);
+
+        // Specifies the owner Window (parent) for new window
+        newWindow.initOwner(parent);
+
+        //set position of new window
+        newWindow.setX(parent.getX()+parent.getWidth()/4);
+        newWindow.setY(parent.getY()+parent.getHeight()/4);
+
+        //run
+        newWindow.show();
+
+    }
+
+
+    //save new update
     public void saveButtonPushed(ActionEvent actionEvent) {
        try{
            //save new photo update
@@ -118,5 +159,19 @@ public class EventDetailsController implements Initializable {
            e.printStackTrace();
        }
 
+    }
+
+    public void editButtonPushed(ActionEvent actionEvent) {
+        try {
+            openEditWindow(actionEvent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void closeEveButtonPushed(ActionEvent actionEvent) {
+    }
+
+    public void deleteButtonPushed(ActionEvent actionEvent) {
     }
 }
