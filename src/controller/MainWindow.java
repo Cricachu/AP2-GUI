@@ -56,6 +56,13 @@ public class MainWindow implements Initializable {
     }
 
     public void updateList() {
+        try{
+            if(postList.getItems()!=null) postList.getItems().clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         ArrayList<Post> allPosts= view1Controller.uni.getAllPosts();
         for(Post post:allPosts) {
             BorderPane bd= new BorderPane();
@@ -169,7 +176,7 @@ public class MainWindow implements Initializable {
     //  //Click a button to open reply message window
     public void viewReplyMessageEvent(Button button,Post post) {
         //Create handler for open event details button
-        EventHandler<ActionEvent> evn = new EventHandler<ActionEvent>() {
+        EventHandler<ActionEvent> evn = new EventHandler<ActionEvent>()  {
             public void handle(ActionEvent e)
             {
                 try {
@@ -177,11 +184,15 @@ public class MainWindow implements Initializable {
                     Reply reply=new Reply(post.getID(),1,view1Controller.userId);
                     post.handleReply(reply);
 
-                    //update mainWindow
-                    updateList();
+
                     //open reply message
                     openReplyMessageWindow(e);
-                } catch (IOException ioException) {
+
+                    //update mainWindow
+
+                    updateList();
+
+                } catch (Exception ioException) {
                     ioException.printStackTrace();
                 }
             }
@@ -199,7 +210,7 @@ public class MainWindow implements Initializable {
         Scene messageView= new Scene(messageWindow);
 
         //get parent stage
-        Stage parent = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+       Stage parent = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
         // New window (Stage)
         Stage newWindow = new Stage();
