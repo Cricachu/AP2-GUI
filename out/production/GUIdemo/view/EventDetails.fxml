@@ -48,8 +48,8 @@
                   <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <items>
                       <Button fx:id="uploadImage" alignment="CENTER" mnemonicParsing="false" onAction="#uploadImagePushed" prefHeight="25.0" prefWidth="120.0" text="Upload Image" />
-                        <Button mnemonicParsing="false" onAction="#closeEveButtonPushed" prefHeight="25.0" prefWidth="120.0" text="Close Event" />
-                        <Button mnemonicParsing="false" onAction="#deleteButtonPushed" prefHeight="25.0" prefWidth="120.0" text="Delete Event" />
+                        <Button fx:id="closePost" mnemonicParsing="false" onAction="#closeEveButtonPushed" prefHeight="25.0" prefWidth="120.0" text="Close Event" />
+                        <Button fx:id="deletePost" mnemonicParsing="false" onAction="#deleteButtonPushed" prefHeight="25.0" prefWidth="120.0" text="Delete Event" />
                         <Button fx:id="editDetails" mnemonicParsing="false" onAction="#editButtonPushed" prefHeight="25.0" prefWidth="120.0" text="Edit Details" />
                         <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveButtonPushed" prefHeight="25.0" prefWidth="120.0" text="Save" />
                     </items>

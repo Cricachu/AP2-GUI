@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,9 +21,11 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Event;
 import model.Post;
 import model.Reply;
+import model.utilities.Status;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -35,6 +38,7 @@ import java.util.ResourceBundle;
 public class EventDetailsController implements Initializable {
 
 
+
     @FXML private TableView<Reply> attendeeTable;
     @FXML private TableColumn <Reply,String> attendeeColumn;
     @FXML private Button uploadImage;
@@ -42,28 +46,57 @@ public class EventDetailsController implements Initializable {
     @FXML private Label eventDetailsLabel;
     @FXML private Button editDetails;
     @FXML private Button backToMainWindow;
-    private Post event;
+    @FXML private Button closePost;
+    @FXML private Button deletePost;
+    @FXML private  Button saveButton;
+
+    private Post eventt;
     private FileChooser fileChooser;
     private File filePath;
     private Image newPhoto;
 
+    private String titleee;
+    private String desc;
+    private String venue;
+    private String date;
+    private int capa;
+    private String tempDetails;
+
+    //method to pass data from main window
     public void initData(Post post){
-        event=post;
+        eventt =post;
         //set post details
-         eventDetailsLabel.setText(event.getPostDetails());
+         eventDetailsLabel.setText(eventt.getPostDetails());
         //cannot edit details if there's reply already
-        if(event.getArrayReply().size()>0) {
+        if(eventt.getArrayReply().size()>0) {
             editDetails.setDisable(true);
         }
 
+        if(eventt.getStatus()== Status.CLOSE) {
+            closePost.setDisable(true);
+        }
         //set photo
-        photo.setImage(event.getPhoto());
+        photo.setImage(eventt.getPhoto());
 
         //set value for table
         attendeeColumn.setCellValueFactory(new PropertyValueFactory<Reply,String>("responderID"));//value for column
         attendeeTable.setItems(getReplies()); //store array of Reply object to table
 
     }
+
+//    //method to pass data from edit event window
+//    public void initEditedData(String title,String desc,String venue,String date,int capa){
+////        System.out.println("Im here");
+//        this.titleee=title;
+//        this.desc=desc;
+//        this.venue=venue;
+//        this.date=date;
+//        this.capa=capa;
+//
+//        System.out.println(titleee);
+//
+//    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -74,7 +107,7 @@ public class EventDetailsController implements Initializable {
     //get observableList of Reply objects for storing in table
     public ObservableList<Reply> getReplies(){
         ObservableList<Reply> reps= FXCollections.observableArrayList();
-        ArrayList<Reply> allReps= event.getArrayReply();
+        ArrayList<Reply> allReps= eventt.getArrayReply();
 
         for(Reply reply:allReps) {
             reps.add(reply);
@@ -120,7 +153,7 @@ public class EventDetailsController implements Initializable {
 
         //access controller and call init method
         editEventDetailController controller=loader.getController();
-        controller.initData(this.event);
+        controller.initData(this.eventt,eventDetailsLabel,titleee,desc,venue,date,capa);
 
         //get parent stage
         Stage parent = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -143,6 +176,11 @@ public class EventDetailsController implements Initializable {
         //run
         newWindow.show();
 
+        newWindow.setOnCloseRequest(new EventHandler<WindowEvent>(){
+
+                                     public void handle(WindowEvent we) {
+
+                                     }});
     }
 
 
@@ -151,7 +189,7 @@ public class EventDetailsController implements Initializable {
        try{
            //save new photo update
            if(this.newPhoto!=null) {
-               this.event.setPhoto(newPhoto);
+               this.eventt.setPhoto(newPhoto);
            }
            //back to main window
            view1Controller.changeToMainWindow(actionEvent);
@@ -170,8 +208,11 @@ public class EventDetailsController implements Initializable {
     }
 
     public void closeEveButtonPushed(ActionEvent actionEvent) {
+        eventt.closePost();
+        eventDetailsLabel.setText(eventt.getPostDetails());
     }
 
     public void deleteButtonPushed(ActionEvent actionEvent) {
+        eventDetailsLabel.setText("deleted");
     }
 }

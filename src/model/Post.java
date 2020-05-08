@@ -82,6 +82,13 @@ public abstract  class Post {
         return creatorID;
     }
     public String getDescription() {return description;}
+    public void setTitle(String str) {
+        this.title=str;
+    }
+
+    public void setDescription(String str) {
+        this.description=str;
+    }
 
     public void closePost() {
         this.status= Status.CLOSE;

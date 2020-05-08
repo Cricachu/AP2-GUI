@@ -92,4 +92,18 @@ public class Event extends Post {
 	public int getCapacity() {
 		return capacity;
 	}
+	public int getAttendeesCount() {
+		return attendeesCount;
+	}
+
+	public void setVenue(String str) {
+		this.venue=str;
+	}
+	public void setDate(String str) {
+		this.date=str;
+	}
+
+	public void setCapacity(int num) {
+		this.capacity=num;
+	}
 }
