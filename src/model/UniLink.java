@@ -9,8 +9,35 @@ import java.util.Collection;
 
 public class UniLink {
 
+    private static String titleee;
+    private static String desc;
+    private static String venue;
+    private static String date;
+    private static int capa;
+    private static String tempDetails;
+
     ArrayList<Post> allPosts = new ArrayList<Post>();
 
+    //store updated information when user updates an Event
+    public static void passNewEventInfo(String ptit,String pdesc,String pvenue,String pdate,int pcaca){
+        titleee=ptit;
+        desc=pdesc;
+        venue=pvenue;
+        date=pdate;
+        capa=pcaca;
+    }
+    public static void testInfo(){
+        System.out.println(titleee+capa);
+    }
+
+    //update the event
+    public static void updateEvent(Event post) {
+        post.setTitle(titleee);
+        post.setDescription(desc);
+        post.setVenue(venue);
+        post.setDate(date);
+        post.setCapacity(capa);
+    }
 
     public static boolean login(String CurrentSessionId) throws Exception {
         boolean success = false;
@@ -91,6 +118,10 @@ public class UniLink {
 
 
 
+    }
+
+    public static void closePost(Post post) {
+        post.closePost();
     }
     public ArrayList<Post> getAllPosts () {
         return allPosts;

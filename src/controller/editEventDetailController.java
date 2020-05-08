@@ -96,12 +96,8 @@ public class editEventDetailController implements Initializable {
             //upon closing window
             labelField.setText(tempDetails); //set post details text
 
-                //update post info
-            eventtt.setTitle(title);
-            eventtt.setDescription(desc);
-            ((Event) eventtt).setVenue(venue);
-            ((Event) eventtt).setDate(date);
-            ((Event) eventtt).setCapacity(capa);
+                //pass new updated details to uniLink
+            UniLink.passNewEventInfo(title,desc,venue,date,capa);
 
                 //close window
             Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();

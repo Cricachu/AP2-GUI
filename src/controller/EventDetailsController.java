@@ -25,6 +25,7 @@ import javafx.stage.WindowEvent;
 import model.Event;
 import model.Post;
 import model.Reply;
+import model.UniLink;
 import model.utilities.Status;
 
 import javax.imageio.ImageIO;
@@ -191,6 +192,9 @@ public class EventDetailsController implements Initializable {
            if(this.newPhoto!=null) {
                this.eventt.setPhoto(newPhoto);
            }
+           //save updated details
+           UniLink.updateEvent((Event) eventt);
+
            //back to main window
            view1Controller.changeToMainWindow(actionEvent);
        } catch(Exception e) {
@@ -208,11 +212,15 @@ public class EventDetailsController implements Initializable {
     }
 
     public void closeEveButtonPushed(ActionEvent actionEvent) {
-        eventt.closePost();
+        //close post
+        UniLink.closePost(eventt);
+
+        //update the text area
         eventDetailsLabel.setText(eventt.getPostDetails());
     }
 
     public void deleteButtonPushed(ActionEvent actionEvent) {
+        UniLink.testInfo();
         eventDetailsLabel.setText("deleted");
     }
 }
