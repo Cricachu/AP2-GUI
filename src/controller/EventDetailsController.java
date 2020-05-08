@@ -85,19 +85,6 @@ public class EventDetailsController implements Initializable {
 
     }
 
-//    //method to pass data from edit event window
-//    public void initEditedData(String title,String desc,String venue,String date,int capa){
-////        System.out.println("Im here");
-//        this.titleee=title;
-//        this.desc=desc;
-//        this.venue=venue;
-//        this.date=date;
-//        this.capa=capa;
-//
-//        System.out.println(titleee);
-//
-//    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -121,6 +108,8 @@ public class EventDetailsController implements Initializable {
     public void clickBackToMainWindow(ActionEvent actionEvent) {
         try {
             view1Controller.changeToMainWindow(actionEvent);
+            eventt.setNotUpdated(); //change state of event to false--> nothing to update
+            view1Controller.uni.testInfo(eventt);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -193,7 +182,13 @@ public class EventDetailsController implements Initializable {
                this.eventt.setPhoto(newPhoto);
            }
            //save updated details
-           UniLink.updateEvent((Event) eventt);
+           if(eventt.getState()==true) { //if there's updated info (state=true) then update
+               view1Controller.uni.testInfo(eventt);
+               UniLink.updateEvent((Event) eventt); //update the event
+               eventt.setNotUpdated(); //reset the state back to false after updating
+               view1Controller.uni.testInfo(eventt);
+           }
+
 
            //back to main window
            view1Controller.changeToMainWindow(actionEvent);
@@ -220,7 +215,9 @@ public class EventDetailsController implements Initializable {
     }
 
     public void deleteButtonPushed(ActionEvent actionEvent) {
-        UniLink.testInfo();
+        UniLink.testInfo(eventt);
+
         eventDetailsLabel.setText("deleted");
+        view1Controller.uni.deletePost(eventt);
     }
 }

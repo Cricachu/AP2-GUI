@@ -47,7 +47,6 @@ public class editEventDetailController implements Initializable {
         this.capa=ecap;
 
 
-
         titleField.setText(eventtt.getTitle());
         descriptionField.setText(eventtt.getDescription());
         venueField.setText( ((Event)post).getVenue());
@@ -55,47 +54,49 @@ public class editEventDetailController implements Initializable {
         capacityField.setText( Integer.toString(((Event)post).getCapacity()));
     }
     public void okButtonHandle(ActionEvent actionEvent) {
-        title=titleField.getText();
-        desc=descriptionField.getText();
-        venue=venueField.getText();
-        date=dateField.getText();
+
+        //record value of original post before any new edit is made
+        title=eventtt.getTitle();
+        desc=eventtt.getDescription();
+        venue=((Event)eventtt).getVenue();
+        date=((Event) eventtt).getDate();
+        capa=((Event) eventtt).getCapacity();
 
         try{
             //validate new value for each field
-            UniLink.addTextInfo(title);
-            UniLink.addTextInfo(desc);
-            UniLink.addTextInfo(venue);
-            UniLink.addDate(date);
-            capa=UniLink.addCapacity(capacityField.getText());
+            UniLink.addTextInfo(titleField.getText());
+            UniLink.addTextInfo(descriptionField.getText());
+            UniLink.addTextInfo(venueField.getText());
+            UniLink.addDate(dateField.getText());
+            UniLink.addCapacity(capacityField.getText());
 
             //set the temporary post details (not yet saved)
             tempDetails="\n"+ "ID: " + "\t" + "\t"+ eventtt.getID()+
-                    "\n"+ "Title: " + "\t" +"\t"+ title+
-                    "\n" + "Description: "+ "\t"+ desc+
+                    "\n"+ "Title: " + "\t" +"\t"+ titleField.getText()+
+                    "\n" + "Description: "+ "\t"+ descriptionField.getText()+
                     "\n" + "Creator ID " +"\t"+  eventtt.getCreatorId()+
                     "\n" + "Status :"+ "\t"+ eventtt.getStatus()+
-                    "\n"+ "Venue: "+ "\t"+"\t"+ venue+
-                    "\n"+ "Date: "+"\t"+"\t"+  date+
-                    "\n"+ "Capacity: " +"\t"+  capa+
+                    "\n"+ "Venue: "+ "\t"+"\t"+ venueField.getText()+
+                    "\n"+ "Date: "+"\t"+"\t"+  dateField.getText()+
+                    "\n"+ "Capacity: " +"\t"+ capacityField.getText()+
                     "\n"+ "Attendees: "+ "\t"+ ((Event) eventtt).getAttendeesCount()+
                     "\n"+ "--------------";
 
-//            //pass data back to Event Details window
-//            FXMLLoader loader=new FXMLLoader();
-//            loader.setLocation(getClass().getResource("/view/EventDetails.fxml"));
-//            Parent editWindow= loader.load();
-//
-//            Scene editEvent= new Scene(editWindow);
-//
-//            //access controller and call init method
-//            EventDetailsController controller=loader.getController();
-//            controller.initEditedData(title,desc,venue,date,capa);
 
-
-
-            //upon closing window
+            //upon closing edit window:
             labelField.setText(tempDetails); //set post details text
 
+            if(detailUpdated()) {//if there's new change, set the old post values to the new ones
+
+                eventtt.setUpdated();//set event state to updated (true)
+
+                title=titleField.getText();
+                desc=descriptionField.getText();
+                venue=venueField.getText();
+                 date=dateField.getText();
+                 capa=Integer.parseInt(capacityField.getText());
+
+            }
                 //pass new updated details to uniLink
             UniLink.passNewEventInfo(title,desc,venue,date,capa);
 
@@ -123,6 +124,17 @@ public class editEventDetailController implements Initializable {
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
         window.close();
+    }
+
+    //check if there's any new change in post details
+    public boolean detailUpdated(){
+        if(title.compareTo(titleField.getText())!=0 ||
+        desc.compareTo(descriptionField.getText())!=0 ||
+        venue.compareTo(venueField.getText()) !=0 ||
+        date.compareTo(dateField.getText())!=0 ||
+        capa!=Integer.parseInt(capacityField.getText())) {
+            return true;
+        } else return false;
     }
 
     @Override

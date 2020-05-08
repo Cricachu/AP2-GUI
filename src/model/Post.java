@@ -14,6 +14,7 @@ public abstract  class Post {
     private Status status;
     private Image photo;
     private String imageName;
+    private boolean updated=false;
 
     public Post(String userID, String title, String description) {
         creatorID=userID;
@@ -95,5 +96,15 @@ public abstract  class Post {
     }
     public void openPost() {
         this.status=Status.OPEN;
+    }
+
+    public boolean getState(){
+        return updated;
+    }
+    public void setUpdated(){
+        this.updated=true;
+    }
+    public void setNotUpdated(){
+        this.updated=false;
     }
 }

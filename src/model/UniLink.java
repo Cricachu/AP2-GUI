@@ -26,8 +26,8 @@ public class UniLink {
         date=pdate;
         capa=pcaca;
     }
-    public static void testInfo(){
-        System.out.println(titleee+capa);
+    public static void testInfo(Post post){
+        System.out.println(titleee+capa+ "State:"+post.getState());
     }
 
     //update the event
@@ -37,6 +37,11 @@ public class UniLink {
         post.setVenue(venue);
         post.setDate(date);
         post.setCapacity(capa);
+    }
+
+    //delete post
+    public void deletePost(Post post) {
+        allPosts.remove(post);
     }
 
     public static boolean login(String CurrentSessionId) throws Exception {
