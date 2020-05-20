@@ -80,9 +80,16 @@ public class view1Controller implements Initializable {
 //
 //        Sale s1= new Sale("s1", "Piano", "Brand new ", 200, 10);
 //        uni.getAllPosts().add(s1);
+//
+//        Sale s2= new Sale("s1", "Violin", "Used ", 200, 10);
+//        uni.getAllPosts().add(s2);
+//
 ////
 //        Job j1= new Job("s1", "Tree cutting", "Need someone to help trimming my garden", 200);
 //        uni.getAllPosts().add(j1);
+//
+//        Job j2= new Job("s1", "House moving", "Need someone to help moving house", 200);
+//        uni.getAllPosts().add(j2);
 //
 //        Event e3= new Event("s3", "Concert", "Bowling for Soup", "Melbourne showground", "01/04/2022", 900);
 //        uni.getAllPosts().add(e3);
