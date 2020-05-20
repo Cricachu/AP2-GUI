@@ -26,10 +26,23 @@ public Sale(String userID, String title, String description, double askingPrice,
 public double getAskingPrice() {
 	return askingPrice;
 }
-
+	public void setHighestOffer(double amt) {
+		this.highestOffer=amt;
+	}
+	public double getHighestOffer() {
+		return highestOffer;
+	}
 public double getMinimumRaise() {
 	return minimumRaise;
 }
+	public void setSaleCount(int num) {
+		saleCount=num;
+	}
+
+
+	public int getSaleCount(){
+		return saleCount;
+	}
 
 public ArrayList<Double> getAllPrice(){
 	return allPrice;

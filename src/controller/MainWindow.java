@@ -154,6 +154,7 @@ public class MainWindow implements Initializable {
     public void logOutButtonHandle(ActionEvent actionEvent) {
         try {
             openLogInWindow(actionEvent);
+            view1Controller.uni.writeToDatabase();
 
         } catch (IOException e) {
             e.printStackTrace();

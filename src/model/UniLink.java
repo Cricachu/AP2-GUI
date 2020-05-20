@@ -1,6 +1,8 @@
 package model;
 
 import javafx.scene.image.Image;
+import model.database.DeleteRow;
+import model.database.InsertRow;
 import model.exceptions.FormatException;
 import model.exceptions.NameException;
 
@@ -16,7 +18,7 @@ public class UniLink {
     private static int capa;
     private static String tempDetails;
 
-    ArrayList<Post> allPosts = new ArrayList<Post>();
+    static ArrayList<Post> allPosts = new ArrayList<Post>();
 
     //store updated information when user updates an Event
     public static void passNewEventInfo(String ptit,String pdesc,String pvenue,String pdate,int pcaca){
@@ -124,6 +126,147 @@ public class UniLink {
 
 
     }
+
+    public static void writeToDatabase() {
+        DeleteRow.deleteAllEvent();
+        DeleteRow.deleteAllSale();
+        DeleteRow.deleteAllJob();
+        DeleteRow.deleteAllReply();
+        DeleteRow.deleteAllPost();
+
+        for (Post post: allPosts)
+        {
+            String id= post.getID();
+            String creatorId= post.getCreatorId();
+            String title= post.getTitle();
+            String description=post.getDescription();
+            String status=post.getStatus().toString();
+            String queryPost="INSERT INTO " + "POST"+
+                    " VALUES ("+ "'"+id+"'"+","+
+                    "'"+creatorId+"'"+","+
+                    "'"+title+"'"+","+
+                    "'"+description+"'"+","+
+                    "'"+status+"'"+
+                    ")";
+            System.out.println(queryPost);
+            InsertRow.toPost(queryPost);
+
+            if (post instanceof Event) {
+
+                String venue= ((Event)post).getVenue();
+                String date= ((Event)post).getDate();
+                int capacity= ((Event)post).getCapacity();
+                int eveCount= ((Event)post).getEventCount();
+
+                String queryEvent="INSERT INTO " + "EVENT"+
+                        " VALUES ("+ "'"+id+"'"+","+
+                        "'"+venue+"'"+","+
+                        "'"+date+"'"+","+
+                        "'"+capacity+"'"+","+
+                        "'"+eveCount+"'"+")";
+
+                System.out.println(queryEvent);
+                InsertRow.toEvent(queryEvent);
+
+
+
+                //write reply to database
+                ArrayList<Reply> allReps= post.getArrayReply();
+                for(Reply rep: allReps){
+                    String replyID=rep.getReplyID();
+                    String postID=rep.getPostId();
+                    double value=rep.getPostValue();
+                    String responder=rep.getResponderID();
+                    int repCount=rep.getReplyCount();
+
+                    String queryReply="INSERT INTO " + "REPLY"+
+                            " VALUES ("+ "'"+replyID+"'"+","+
+                            "'"+postID+"'"+","+
+                            "'"+value+"'"+","+
+                            "'"+responder+"'"+","+
+                            "'"+repCount+"'"+ ")";
+
+                    System.out.println(queryReply);
+                    InsertRow.toReply(queryReply);
+                }
+            } else if(post instanceof Job) {
+                double jprice= ((Job)post).getProposedPrice();
+                double lowest= ((Job)post).getLowestOffer();
+                int jobCount=((Job)post).getJobCount();
+//					String status=post.getStatus().toString();
+
+                String queryJob="INSERT INTO " + "JOB"+
+                        " VALUES ("+ "'"+id+"'"+","+
+                        "'"+jprice+"'"+","+
+                        "'"+lowest+"'"+","+
+                        "'"+jobCount+"'"+")";
+                System.out.println(queryJob);
+                InsertRow.toJob(queryJob);
+
+
+
+                //write reply to database
+                ArrayList<Reply> allReps= post.getArrayReply();
+                for(Reply rep: allReps){
+                    String replyID=rep.getReplyID();
+                    String postID=rep.getPostId();
+                    double value=rep.getPostValue();
+                    String responder=rep.getResponderID();
+                    int repCount=rep.getReplyCount();
+
+                    String queryReply="INSERT INTO " + "REPLY"+
+                            " VALUES ("+ "'"+replyID+"'"+","+
+                            "'"+postID+"'"+","+
+                            "'"+value+"'"+","+
+                            "'"+responder+"'"+","+
+                            "'"+repCount+"'"+ ")";
+
+                    System.out.println(queryReply);
+                    InsertRow.toReply(queryReply);
+                }
+
+            }else if(post instanceof Sale) {
+                double price= ((Sale)post).getAskingPrice();
+                double min= ((Sale)post).getMinimumRaise();
+                double highest= ((Sale)post).getHighestOffer();
+                int saleCount=((Sale)post).getSaleCount();
+//					String status=post.getStatus().toString();
+
+                String querySale="INSERT INTO " + "SALE"+
+                        " VALUES ("+ "'"+id+"'"+","+
+                        "'"+price+"'"+","+
+                        "'"+min+"'"+","+
+                        "'"+highest+"'"+","+
+                        "'"+saleCount+"'"+")";
+                System.out.println(querySale);
+                InsertRow.toSale(querySale);
+
+
+
+                //write reply to database
+                ArrayList<Reply> allReps= post.getArrayReply();
+                for(Reply rep: allReps){
+                    String replyID=rep.getReplyID();
+                    String postID=rep.getPostId();
+                    double value=rep.getPostValue();
+                    String responder=rep.getResponderID();
+                    int repCount=rep.getReplyCount();
+
+                    String queryReply="INSERT INTO " + "REPLY"+
+                            " VALUES ("+ "'"+replyID+"'"+","+
+                            "'"+postID+"'"+","+
+                            "'"+value+"'"+","+
+                            "'"+responder+"'"+","+
+                            "'"+repCount+"'"+ ")";
+
+                    System.out.println(queryReply);
+                    InsertRow.toReply(queryReply);
+                }
+            }
+
+        }
+    }
+
 
     public static void closePost(Post post) {
         post.closePost();

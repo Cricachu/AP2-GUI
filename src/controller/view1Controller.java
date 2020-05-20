@@ -10,6 +10,9 @@ import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import model.*;
+import model.database.CreateTable;
+import model.database.DeleteTable;
+import model.database.SelectQuery;
 import model.exceptions.FormatException;
 import model.exceptions.NameException;
 
@@ -34,6 +37,8 @@ public class view1Controller implements Initializable {
             if(uni.login(userId)) {
 //                outputLabel.setText("Welcome,"+ a);
                 changeToMainWindow(actionEvent);
+
+
             }
         }catch(FormatException fe) {
                outputLabel.setText(fe.getReason());
@@ -68,23 +73,45 @@ public class view1Controller implements Initializable {
 
     public void initData(UniLink uni) {
         this.uni=uni;
-        //hardcoded for testing
-        Event e1= new Event("s1", "Concert", "My chemical Romance", "Melbourne showground", "01/04/2020", 50);
-         uni.getAllPosts().add(e1);
+//        hardcoded for testing
+//        Event e1= new Event("s1", "Concert", "My chemical Romance", "Melbourne showground", "01/04/2020", 50);
+//         uni.getAllPosts().add(e1);
+//
+//
+//        Sale s1= new Sale("s1", "Piano", "Brand new ", 200, 10);
+//        uni.getAllPosts().add(s1);
+////
+//        Job j1= new Job("s1", "Tree cutting", "Need someone to help trimming my garden", 200);
+//        uni.getAllPosts().add(j1);
+//
+//        Event e3= new Event("s3", "Concert", "Bowling for Soup", "Melbourne showground", "01/04/2022", 900);
+//        uni.getAllPosts().add(e3);
 
 
-        Sale s1= new Sale("s1", "Violin", "Brand new violin", 200, 10);
-        uni.getAllPosts().add(s1);
+//        for(Post post: uni.getAllPosts()) {
+//            post.printDetails();
+//        }
 
-        Job j1= new Job("s1", "Move house", "Need someone to help move house", 200);
-        uni.getAllPosts().add(j1);
 
-        Event e3= new Event("s3", "Concert", "Bowling for Soup", "Melbourne showground", "01/04/2022", 900);
-        uni.getAllPosts().add(e3);
 
-        for(Post post: uni.getAllPosts()) {
-            post.printDetails();
-        }
+            //delete tables
+//        DeleteTable.deleteReply();
+//        DeleteTable.deleteEvent();
+//        DeleteTable.deleteJob();
+//        DeleteTable.deleteSale();
+//        DeleteTable.deletePost();
+//
+//
+////        create tables
+//        CreateTable.newPost();
+//        CreateTable.newEvent();
+//          CreateTable.newReply();
+//            CreateTable.newSale();
+//            CreateTable.newJob();
+
+        //load data
+        SelectQuery.loadPost(uni);
+
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

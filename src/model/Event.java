@@ -81,6 +81,14 @@ public class Event extends Post {
 		return attendees;
 	}
 
+	public void setEventCount(int num) {
+		eventCount=num;
+	}
+
+	public int getEventCount(){
+		return eventCount;
+	}
+
 	public String getVenue() {
 		return venue;
 	}

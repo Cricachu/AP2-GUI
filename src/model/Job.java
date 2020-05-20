@@ -19,8 +19,24 @@ public Job(String userID, String title, String description, double proposedPrice
 
 //accessors+ mutators
 
+	public void setLowestOffer(double amt) {
+		this.lowestOffer=amt;
+	}
+	public double getProposedPrice() {
+		return proposedPrice;
+	}
 
+	public double getLowestOffer() {
+		return lowestOffer;
+	}
 
+	public void setJobCount(int num) {
+		jobCount=num;
+	}
+
+	public int getJobCount(){
+		return jobCount;
+	}
 
 //abstract methods
 public void printDetailsforReply() {

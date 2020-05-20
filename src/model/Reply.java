@@ -33,5 +33,13 @@ public class Reply {
     public void setReplyID(String id) {
         this.replyID=id;
     }
+
+    public int getReplyCount(){
+       return count;
+    }
+
+    public void setReplyCount(int num) {
+        count=num;
+    }
 }
 

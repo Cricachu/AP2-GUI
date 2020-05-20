@@ -8,11 +8,28 @@ import javafx.stage.Stage;
 import model.*;
 
 import java.io.IOException;
+import java.sql.Connection;
+
+import static model.database.ConnectionTest.getConnection;
 
 public class mainGUI extends Application {
     UniLink uni=new UniLink();
 
     public static void main(String[] args) {
+
+        //establish connection
+
+        final String DB_NAME = "testDB";
+
+        //use try-with-resources Statement
+        try (Connection con = getConnection(DB_NAME)) {
+
+            System.out.println("Connection to database "
+                    + DB_NAME + " created successfully");
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         //launch GUI
         launch(args);
