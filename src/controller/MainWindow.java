@@ -250,7 +250,7 @@ public class MainWindow implements Initializable {
 
         //access controller and call init method
         NewSaleOfferController controller=loader.getController();
-        controller.initData(post);
+        controller.initData((Sale)post);
 
         // New window (Stage)
         Stage newWindow = new Stage();

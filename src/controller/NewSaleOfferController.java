@@ -12,39 +12,64 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.Post;
+import model.Reply;
+import model.Sale;
 import model.exceptions.FormatException;
+import model.exceptions.PriceException;
 import model.exceptions.ValueException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class NewSaleOfferController {
     @FXML private TextField OfferField;
     @FXML private  Label messageLabel;
-    private Post sale;
+    private Sale sale;
 
     public void okButtonHandle(ActionEvent actionEvent) {
-//        messageLabel.setText(sale.getDescription() );
+
         String postId=sale.getID();
         String userId=view1Controller.userId;
         String offer=OfferField.getText();
-        Post post=sale;
+        Sale post=sale;
+
+        //print for testing
+        System.out.println(post.getHighestOffer());
+        System.out.println(post.getMinimumRaise());
+        System.out.print("difference:");
+        System.out.println( Double.parseDouble(offer)-post.getHighestOffer());
+
 
         try{
+            //successfully bought the item
             view1Controller.uni.replyToSale(postId,offer,userId,post);
-            closeThisWindow(actionEvent);
 
+            closeThisWindow(actionEvent); //close this window
+
+            //display new window showing success message
+            openSaleReplyMessageWindow(actionEvent,"This item has been sold to you! Contact the owner for more detail");
 
         }catch(ValueException e) {
+            //when the priced entered is below the asking price:
 
+            //close this window
             closeThisWindow(actionEvent);
+            //display new window showing the message confirming the offer
             try {
-                openReplyMessageWindow(actionEvent,e.getReason());
+                openSaleReplyMessageWindow(actionEvent,e.getReason());
+
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
-//            messageLabel.setText(e.getReason());
-        }catch(Exception e) {
+        }catch(PriceException e) {
+            //when the offer entered below minimum raise
+            messageLabel.setText(e.getReason());
+
+        }catch(NumberFormatException e) {
+            //when the input format is wrong
             messageLabel.setText(e.getMessage());
+        } catch (Exception ee) {
+            ee.printStackTrace();
         }
     }
 
@@ -53,8 +78,16 @@ public class NewSaleOfferController {
     }
 
     //pass current post object from main window to this window
-    public void initData (Post post) {
+    public void initData (Sale post) {
         sale=post;
+
+        //print for testing
+        System.out.println(sale.getHighestOffer());
+        System.out.println(sale.getMinimumRaise());
+        ArrayList<Reply> allreps=sale.getArrayReply();
+        for(Reply rep:allreps) {
+            System.out.println(rep.getResponderID()+" "+ rep.getPostValue());
+        }
 
     }
 
@@ -66,10 +99,15 @@ public class NewSaleOfferController {
         window.close();
     }
 
-    //open reply message window
-    public void openReplyMessageWindow(ActionEvent actionEvent,String message) throws IOException {
+
+
+
+
+
+    //open sale reply message window
+    public void openSaleReplyMessageWindow(ActionEvent actionEvent,String message) throws IOException {
         FXMLLoader loader=new FXMLLoader();
-        loader.setLocation(getClass().getResource("/view/ReplyMessage.fxml"));
+        loader.setLocation(getClass().getResource("/view/SaleReplyMessage.fxml"));
         Parent messageWindow= loader.load();
 
         Scene messageView= new Scene(messageWindow);
@@ -77,8 +115,8 @@ public class NewSaleOfferController {
         //get parent stage
         Stage parent = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
-        //get the controller and call the init method to pass message
-        ReplyMessage controller=loader.getController();
+//        //get the controller and call the init method to pass message
+        SaleReplyMessageController controller=loader.getController();
         controller.initData(message);
 
         // New window (Stage)

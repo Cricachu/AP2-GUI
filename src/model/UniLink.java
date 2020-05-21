@@ -5,6 +5,7 @@ import model.database.DeleteRow;
 import model.database.InsertRow;
 import model.exceptions.FormatException;
 import model.exceptions.NameException;
+import model.exceptions.PriceException;
 import model.exceptions.ValueException;
 
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class UniLink {
 
     }
 
-    public void replyToSale(String postId,String saleOffer, String userId,Post post) throws ValueException,Exception{
+    public void replyToSale(String postId,String saleOffer, String userId,Sale post) throws ValueException, PriceException,NumberFormatException {
         double offer= addPrice(saleOffer);
         Reply reply= new Reply(postId,offer,userId);
         post.handleReply(reply);
@@ -108,12 +109,12 @@ public class UniLink {
         allPosts.add(event);
     }
 
-    public static double addPrice(String amount) throws Exception{
+    public static double addPrice(String amount) throws NumberFormatException{
         double price=0;
         try{
             price=Double.parseDouble(amount);
         } catch(Exception e) {
-            throw new Exception("Wrong format for pricing");
+            throw new NumberFormatException("Wrong format for pricing");
         }
         return price;
     }

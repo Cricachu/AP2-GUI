@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.SaleReplyMessageController"
-            prefHeight="191.0" prefWidth="309.0">
 
+<AnchorPane prefHeight="191.0" prefWidth="309.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SaleReplyMessageController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="136.0" prefWidth="309.0">
+         <children>
+            <Text fx:id="textField" strokeType="OUTSIDE" strokeWidth="0.0" text="Your offer has been submitted. However, the price is below asking price. The item is still on sale" textAlignment="CENTER" wrappingWidth="183.08084106445312" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutY="137.0" prefHeight="55.0" prefWidth="314.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#OkButtonHandle" text="OK" />
+         </children>
+      </HBox>
+   </children>
 </AnchorPane>

@@ -1,5 +1,6 @@
 package model;
 
+import model.exceptions.PriceException;
 import model.exceptions.ValueException;
 import model.utilities.Status;
 
@@ -48,11 +49,13 @@ public double getMinimumRaise() {
 public ArrayList<Double> getAllPrice(){
 	return allPrice;
 }
+
+
 //implement abstract methods
-public boolean handleReply(Reply reply) throws ValueException,Exception {
-	this.highestOffer=findMaxPrice(allPrice);
+public boolean handleReply(Reply reply) throws ValueException,PriceException {
+//	this.highestOffer=findMaxPrice(allPrice);
 	double currentPrice=reply.getPostValue();
-	
+
 	if(currentPrice>askingPrice && super.getStatus()== Status.OPEN ) {
 		super.getArrayReply().add(reply);
 		highestOffer=currentPrice;
@@ -60,17 +63,15 @@ public boolean handleReply(Reply reply) throws ValueException,Exception {
 		System.out.println("Congratulation. The "+ super.getTitle()+" has been sold to you");
 		System.out.println("Please contact owner "+ super.getCreatorId()+" for more detail");
 		super.closePost();
-//		return true;
-	} else if (currentPrice>highestOffer &&super.getStatus()== Status.OPEN && (currentPrice-highestOffer)>= this.minimumRaise) {
+
+	} else if (currentPrice>highestOffer &&super.getStatus()== Status.OPEN
+			&& (currentPrice-highestOffer)>= this.minimumRaise) {
 		super.getArrayReply().add(reply);
 		highestOffer=currentPrice;
 		allPrice.add(currentPrice);
-		System.out.println("Your offer has been submitted");
-		System.out.println("However, your offer is below the asking price");
-		System.out.println("The item is still on sale");
 		throw new ValueException("Your offer has been submitted, but still below asking price. Item is still on sale");
 //		return true;
-	} else throw new Exception("Offer must be higher than asking price. ");
+	} else throw new PriceException("Offer must be higher than highest offer + min raise. ");
 	return true;
 }
 

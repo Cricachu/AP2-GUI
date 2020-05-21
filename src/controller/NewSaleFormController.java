@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.exceptions.FormatException;
+import model.exceptions.PriceException;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

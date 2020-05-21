@@ -280,7 +280,12 @@ public class SelectQuery {
                         Reply reply= new Reply(postId,value,responder);
                         reply.setReplyID(replyId);
                         reply.setReplyCount(repCount);
-                        post.handleReply(reply);
+
+                        if (post instanceof Event) {
+                            post.handleReply(reply);
+                        } else post.getArrayReply().add(reply); //no need to check for exception again for sale and job
+//
+
                         System.out.println("Successfully added reply no "+ reply.getReplyID());
                     }
 
