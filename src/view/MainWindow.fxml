@@ -42,8 +42,8 @@
                   <ToolBar prefHeight="78.0" prefWidth="797.0">
                     <items>
                       <Button fx:id="newEventbtn" mnemonicParsing="false" onAction="#newEventHandle" prefHeight="42.0" prefWidth="103.0" text="Add New Event" />
-                        <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="103.0" text="Add New Sale" />
-                        <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="103.0" text="Add New Job" />
+                        <Button mnemonicParsing="false" onAction="#newSaleHandle" prefHeight="42.0" prefWidth="103.0" text="Add New Sale" />
+                        <Button mnemonicParsing="false" onAction="#newJobHandler" prefHeight="42.0" prefWidth="103.0" text="Add New Job" />
                         <ChoiceBox prefHeight="39.0" prefWidth="136.0" />
                         <ChoiceBox prefHeight="39.0" prefWidth="141.0" />
                         <ChoiceBox prefHeight="39.0" prefWidth="141.0" />

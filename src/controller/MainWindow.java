@@ -130,7 +130,7 @@ public class MainWindow implements Initializable {
         }
 
     }
-
+    //open new window when click New Event button
     public void newEventHandle(ActionEvent actionEvent)  {
         try {
             openNewEventWindow(actionEvent);
@@ -138,6 +138,7 @@ public class MainWindow implements Initializable {
             e.printStackTrace();
         }
     }
+
 
     public void openNewEventWindow(ActionEvent event) throws IOException {
         Parent mainWindow= FXMLLoader.load(getClass().getResource("/view/NewEventForm.fxml"));
@@ -148,6 +149,48 @@ public class MainWindow implements Initializable {
         window.setY(10);
         window.setX(350);
         window.setTitle("New Event");
+        window.show();
+    }
+
+    //open new Window when click new Sale button
+    public void newSaleHandle(ActionEvent actionEvent) {
+        try {
+            openNewSaleWindow(actionEvent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openNewSaleWindow(ActionEvent event) throws IOException {
+        Parent mainWindow= FXMLLoader.load(getClass().getResource("/view/NewSaleForm.fxml"));
+        Scene scene= new Scene(mainWindow);
+        //get the stage information
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(scene);
+        window.setY(10);
+        window.setX(350);
+        window.setTitle("New Sale");
+        window.show();
+    }
+
+    //open new Window when click new Job Button
+    public void newJobHandler(ActionEvent actionEvent) {
+        try {
+            openNewJobWindow(actionEvent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openNewJobWindow(ActionEvent event) throws IOException {
+        Parent mainWindow= FXMLLoader.load(getClass().getResource("/view/NewJobForm.fxml"));
+        Scene scene= new Scene(mainWindow);
+        //get the stage information
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(scene);
+        window.setY(10);
+        window.setX(350);
+        window.setTitle("New Job");
         window.show();
     }
 
@@ -271,4 +314,7 @@ public class MainWindow implements Initializable {
         window.setTitle("Event Details");
         window.show();
     }
+
+
+
 }

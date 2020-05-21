@@ -66,6 +66,26 @@ public class UniLink {
 
     }
 
+    public void createNewJob(String userId, String title, String desc, String proposedPrice,Image photo) throws Exception{
+        addTextInfo(title);
+        addTextInfo(desc);
+        double proposed=addPrice(proposedPrice);
+
+        Job job = new Job(userId,title,desc,proposed);
+        job.setPhoto(photo);
+        allPosts.add(job);
+    }
+
+    public void createNewSale(String userId, String title, String desc, String askingPrice, String minRaise,Image photo) throws Exception {
+        addTextInfo(title);
+        addTextInfo(desc);
+        double askPrice=addPrice(askingPrice);
+        double minimumRaise=addPrice(minRaise);
+
+        Sale sale= new Sale(userId,title,desc,askPrice,minimumRaise);
+        sale.setPhoto(photo);
+        allPosts.add(sale);
+    }
 
     public void createNewEvent(String userId, String title, String desc, String venue, String date, String capacity, Image photo) throws Exception{
 
@@ -78,6 +98,16 @@ public class UniLink {
         Event event= new Event(userId,title,desc,venue,date,capa);
         event.setPhoto(photo);
         allPosts.add(event);
+    }
+
+    public static double addPrice(String amount) throws Exception{
+        double price=0;
+        try{
+            price=Double.parseDouble(amount);
+        } catch(Exception e) {
+            throw new Exception("Wrong format for pricing");
+        }
+        return price;
     }
 
     public static void addTextInfo(String info) throws Exception {

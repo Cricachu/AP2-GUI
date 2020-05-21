@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="482.0" prefWidth="475.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NewJobFormController">
+   <children>
+      <BorderPane layoutX="-2.0" layoutY="1.0" prefHeight="482.0" prefWidth="475.0">
+         <top>
+            <Label prefHeight="30.0" prefWidth="268.0" text="Enter details of the job below" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets top="20.0" />
+               </BorderPane.margin>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </top>
+         <center>
+            <VBox alignment="TOP_CENTER" prefHeight="412.0" prefWidth="451.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="601.0" spacing="10.0">
+                     <children>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="83.0" text="Title" />
+                        <TextField fx:id="titleField" prefHeight="25.0" prefWidth="166.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="58.0" prefWidth="601.0" spacing="10.0">
+                     <children>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="83.0" text="Description" />
+                        <TextField fx:id="descriptionField" prefHeight="25.0" prefWidth="168.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="58.0" prefWidth="601.0" spacing="10.0">
+                     <children>
+                        <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="85.0" text="Proposed Price" />
+                        <TextField fx:id="proposedPriceField" prefHeight="25.0" prefWidth="171.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="83.0" prefWidth="476.0" spacing="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#uploadImageButtonPushed" prefHeight="25.0" prefWidth="94.0" text="Upload Image">
+                           <HBox.margin>
+                              <Insets left="22.0" />
+                           </HBox.margin>
+                        </Button>
+                        <ImageView fx:id="imageView" fitHeight="110.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../images/default.jpeg" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="58.0" prefWidth="601.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="createButton" mnemonicParsing="false" onAction="#createEventButtonHandle" prefHeight="25.0" prefWidth="64.0" text="Create" />
+                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelButtonHandle" prefHeight="25.0" prefWidth="64.0" text="Cancel" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </center>
+         <bottom>
+            <Label fx:id="messageLabel" BorderPane.alignment="CENTER" />
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
