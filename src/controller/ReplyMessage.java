@@ -19,4 +19,8 @@ public class ReplyMessage {
         window.close();
 
     }
+
+    public void initData(String message) {
+        messageLabel.setText(message);
+    }
 }

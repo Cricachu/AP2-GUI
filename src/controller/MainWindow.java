@@ -30,6 +30,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.*;
 import model.Event;
 import model.exceptions.FormatException;
@@ -113,6 +114,7 @@ public class MainWindow implements Initializable {
 
             } else {
                 bd.setStyle("-fx-background-color: #B5C5C5;");
+                ReplyToSale(reply,post);
             }
 
             buttons.getChildren().addAll(reply,moreDetails);
@@ -217,7 +219,66 @@ public class MainWindow implements Initializable {
         window.show();
     }
 
-    //  //Click a button to open reply message window
+    //click Reply button to reply to Sale
+
+    public void ReplyToSale (Button button,Post post) {
+        EventHandler<ActionEvent> evn = new EventHandler<ActionEvent>()  {
+            public void handle(ActionEvent e)
+            {
+                try {
+                    openSaleOfferWindow(e,post); //open new window for entering sale offer
+                } catch (Exception ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        };
+        //set button on action
+        button.setOnAction(evn);
+    }
+
+
+    //Open new window for entering sale offer
+    public void openSaleOfferWindow(ActionEvent actionEvent,Post post) throws IOException {
+        FXMLLoader loader=new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/newSaleOffer.fxml"));
+        Parent messageWindow= loader.load();
+
+        Scene messageView= new Scene(messageWindow);
+
+        //get parent stage
+        Stage parent = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+
+        //access controller and call init method
+        NewSaleOfferController controller=loader.getController();
+        controller.initData(post);
+
+        // New window (Stage)
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Reply Message");
+        newWindow.setScene(messageView);
+
+        // Specifies the modality for new window.
+        newWindow.initModality(Modality.WINDOW_MODAL);
+
+        // Specifies the owner Window (parent) for new window
+        newWindow.initOwner(parent);
+
+        //set position of new window
+        newWindow.setX(parent.getX()+parent.getWidth()/4);
+        newWindow.setY(parent.getY()+parent.getHeight()/4);
+        //run
+        newWindow.show();
+
+        newWindow.setOnCloseRequest(new EventHandler<WindowEvent>(){
+
+            //update post listview when close reply window
+            public void handle(WindowEvent we) {
+                updateList();
+            }});
+    }
+
+
+    //  //Click Reply button to reply to Event
     public void viewReplyMessageEvent(Button button,Post post) {
         //Create handler for open event details button
         EventHandler<ActionEvent> evn = new EventHandler<ActionEvent>()  {

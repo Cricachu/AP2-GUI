@@ -5,6 +5,7 @@ import model.database.DeleteRow;
 import model.database.InsertRow;
 import model.exceptions.FormatException;
 import model.exceptions.NameException;
+import model.exceptions.ValueException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,6 +64,13 @@ public class UniLink {
 
         success = true;
         return success;
+
+    }
+
+    public void replyToSale(String postId,String saleOffer, String userId,Post post) throws ValueException,Exception{
+        double offer= addPrice(saleOffer);
+        Reply reply= new Reply(postId,offer,userId);
+        post.handleReply(reply);
 
     }
 

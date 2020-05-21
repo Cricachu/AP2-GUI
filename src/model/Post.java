@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.image.Image;
+import model.exceptions.ValueException;
 import model.utilities.Status;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public abstract  class Post {
 
     //abstract methods
     public abstract void printDetailsforReply();
-    public abstract boolean handleReply(Reply reply);
+    public abstract boolean handleReply(Reply reply) throws ValueException, Exception;
     public abstract String getReplyDetails();
 
 
