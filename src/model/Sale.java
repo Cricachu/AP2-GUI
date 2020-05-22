@@ -25,7 +25,7 @@ public Sale(String userID, String title, String description, double askingPrice,
 }
 
 //accessors/mutators
-public double getAskingPrice() {
+	public double getAskingPrice() {
 	return askingPrice;
 }
 	public void setHighestOffer(double amt) {
@@ -34,13 +34,20 @@ public double getAskingPrice() {
 	public double getHighestOffer() {
 		return highestOffer;
 	}
-public double getMinimumRaise() {
+	public double getMinimumRaise() {
 	return minimumRaise;
 }
 	public void setSaleCount(int num) {
 		saleCount=num;
 	}
 
+	public void setAskingPrice(double amt) {
+	this.askingPrice=amt;
+	}
+
+	public void setMinimumRaise(double amt) {
+	this.minimumRaise=amt;
+	}
 
 	public int getSaleCount(){
 		return saleCount;

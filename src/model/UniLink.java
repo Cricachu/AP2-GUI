@@ -20,7 +20,30 @@ public class UniLink {
     private static int capa;
     private static String tempDetails;
 
+
+    private static String saleTitle;
+    private static String saleDesc;
+    private static double saleAskPrice;
+    private static double saleMinPrice;
+
+
     static ArrayList<Post> allPosts = new ArrayList<Post>();
+
+    //store updated information when user updates a Sale
+    public static void passNewSaleInfor(String stitle,String sdec, double sask, double smin) {
+        saleTitle=stitle;
+        saleDesc=sdec;
+        saleAskPrice=sask;
+        saleMinPrice=smin;
+    }
+
+    //update the sale
+    public static void updateSale(Sale post) {
+        post.setTitle(saleTitle);
+        post.setDescription(saleDesc);
+        post.setAskingPrice(saleAskPrice);
+        post.setMinimumRaise(saleMinPrice);
+    }
 
     //store updated information when user updates an Event
     public static void passNewEventInfo(String ptit,String pdesc,String pvenue,String pdate,int pcaca){

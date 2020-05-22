@@ -5,8 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -15,14 +18,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Post;
-import model.Reply;
+import model.*;
 import model.utilities.Status;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -45,6 +49,13 @@ public class SaleDetailsController implements Initializable {
 
 
     public void clickBackToMainWindow(ActionEvent actionEvent) {
+        try {
+            view1Controller.changeToMainWindow(actionEvent);
+            salePost.setNotUpdated(); //change state of sale to false--> nothing to update
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void uploadImagePushed(ActionEvent actionEvent) {
@@ -71,9 +82,34 @@ public class SaleDetailsController implements Initializable {
     }
 
     public void editButtonPushed(ActionEvent actionEvent) {
+        try {
+            openEditWindow(actionEvent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveButtonPushed(ActionEvent actionEvent) {
+
+        try{
+            //save new photo update
+            if(this.newPhoto!=null) {
+                this.salePost.setPhoto(newPhoto);
+            }
+            //save updated details
+            if(salePost.getState()==true) { //if there's updated info (state=true) then update
+
+                UniLink.updateSale((Sale)salePost); //update the sale
+                salePost.setNotUpdated(); //reset the state back to false after updating
+
+            }
+
+
+            //back to main window
+            view1Controller.changeToMainWindow(actionEvent);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -89,6 +125,42 @@ public class SaleDetailsController implements Initializable {
 
         return reps;
     }
+
+    //Open edit window
+    public void openEditWindow(ActionEvent event) throws IOException {
+        FXMLLoader loader=new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/editSaleDetails.fxml"));
+        Parent editWindow= loader.load();
+
+        Scene editEvent= new Scene(editWindow);
+
+        //access controller and call init method
+        EditSaleDetailsController controller=loader.getController();
+        controller.initData(postDetailsLabel,(Sale)salePost);
+
+        //get parent stage
+        Stage parent = (Stage) ((Node)event.getSource()).getScene().getWindow();
+
+        // New window (Stage)
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Edit Sale ");
+        newWindow.setScene(editEvent);
+
+        // Specifies the modality for new window.
+        newWindow.initModality(Modality.WINDOW_MODAL);
+
+        // Specifies the owner Window (parent) for new window
+        newWindow.initOwner(parent);
+
+        //set position of new window
+        newWindow.setX(parent.getX()+parent.getWidth()/4);
+        newWindow.setY(parent.getY()+parent.getHeight()/4);
+
+        //run
+        newWindow.show();
+
+    }
+
 
     //passing data from main window to this window
     public void initData(Post post) {

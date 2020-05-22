@@ -37,9 +37,10 @@ public class editEventDetailController implements Initializable {
 
     Post eventtt;
     public void initData(Post post, Label labell,String etitle,String edesc,String evenue,String edate,int ecap) {
-        this.labelField=labell;
 
-        this.eventtt =post;
+        this.labelField=labell;//pass field to record event details from event details window
+        this.eventtt =post;//pass post from event details window to this window
+
         this.title=etitle;
         this.desc=edesc;
         this.venue=evenue;
@@ -84,7 +85,7 @@ public class editEventDetailController implements Initializable {
 
 
             //upon closing edit window:
-            labelField.setText(tempDetails); //set post details text
+            labelField.setText(tempDetails); //set post details text field (temporary) in the previous window
 
             if(detailUpdated()) {//if there's new change, set the old post values to the new ones
 
