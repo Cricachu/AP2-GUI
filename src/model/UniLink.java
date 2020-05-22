@@ -68,6 +68,14 @@ public class UniLink {
 
     }
 
+    public void replyToJob(String postId,String saleOffer, String userId,Job post) throws NumberFormatException,Exception {
+        double offer=addPrice(saleOffer);
+        Reply reply= new Reply(postId,offer,userId);
+        if(!post.handleReply(reply)) {
+            throw new Exception("Offer must be lower than lowest offer.");
+        }
+    }
+
     public void replyToSale(String postId,String saleOffer, String userId,Sale post) throws ValueException, PriceException,NumberFormatException {
         double offer= addPrice(saleOffer);
         Reply reply= new Reply(postId,offer,userId);
