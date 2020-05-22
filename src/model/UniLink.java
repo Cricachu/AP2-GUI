@@ -26,8 +26,26 @@ public class UniLink {
     private static double saleAskPrice;
     private static double saleMinPrice;
 
+    private static String jobTitle;
+    private static String jobDesc;
+    private static double jobProsPrice;
 
     static ArrayList<Post> allPosts = new ArrayList<Post>();
+
+    //store updated information when user updates a Job
+    public static void passNewJobInfo(String jtitle,String jdec,double jpros) {
+        jobTitle=jtitle;
+        jobDesc=jdec;
+        jobProsPrice=jpros;
+    }
+
+    //update the job
+    public static void updateJob(Job post) {
+        post.setTitle(jobTitle);
+        post.setDescription(jobDesc);
+        post.setProposedPrice(jobProsPrice);
+        post.setLowestOffer(jobProsPrice); //lowest offer = proposed price initially
+    }
 
     //store updated information when user updates a Sale
     public static void passNewSaleInfor(String stitle,String sdec, double sask, double smin) {

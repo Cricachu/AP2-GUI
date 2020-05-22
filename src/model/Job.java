@@ -26,6 +26,9 @@ public Job(String userID, String title, String description, double proposedPrice
 		return proposedPrice;
 	}
 
+	public void setProposedPrice(double amt) {
+	proposedPrice=amt;
+	}
 	public double getLowestOffer() {
 		return lowestOffer;
 	}

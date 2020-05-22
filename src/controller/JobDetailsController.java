@@ -31,35 +31,33 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class SaleDetailsController implements Initializable {
-    @FXML private Button backToMainWindow;
-    @FXML private ImageView photo;
+public class JobDetailsController implements Initializable {
+    @FXML
+    private ImageView photo;
     @FXML private Label postDetailsLabel;
-    @FXML private TableView <Reply>replyTable;
-    @FXML private TableColumn <Reply,String> studentColumn;
+    @FXML private TableView<Reply> replyTable;
+    @FXML private TableColumn<Reply,String> studentColumn;
     @FXML private TableColumn <Reply, Double>offerColumn;
     @FXML private Button editDetails;
     @FXML private Button closePost;
 
-
-    private Post salePost;
+    private Post jobPost;
     private FileChooser fileChooser;
     private File filePath;
     private Image newPhoto;
 
-
-    public void clickBackToMainWindow(ActionEvent actionEvent) {
+    public void clickBackToMainWindow(ActionEvent event) {
         try {
-            view1Controller.changeToMainWindow(actionEvent);
-            salePost.setNotUpdated(); //change state of sale to false--> nothing to update
+            view1Controller.changeToMainWindow(event);
+           jobPost.setNotUpdated(); //change state of job to false--> nothing to update
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void uploadImagePushed(ActionEvent actionEvent) {
-        Stage stage= (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+    public void uploadImagePushed(ActionEvent event) {
+        Stage stage= (Stage) ((Node)event.getSource()).getScene().getWindow();
         fileChooser=new FileChooser();
         fileChooser.setTitle("Open Image");
         this.filePath=fileChooser.showOpenDialog(stage);
@@ -75,20 +73,20 @@ public class SaleDetailsController implements Initializable {
         }
     }
 
-    public void closeButtonPushed(ActionEvent actionEvent) {
+    public void closeButtonPushed(ActionEvent event) {
         //close post
-        UniLink.closePost(salePost);
+        UniLink.closePost(jobPost);
 
         //update Text area
-        postDetailsLabel.setText(salePost.getPostDetails());
+        postDetailsLabel.setText(jobPost.getPostDetails());
     }
 
-    public void deleteButtonPushed(ActionEvent actionEvent) {
-        view1Controller.uni.deletePost(salePost);
+    public void deleteButtonPushed(ActionEvent event) {
+        view1Controller.uni.deletePost(jobPost);
 
         try {
-            deletionConfirmationMessage(actionEvent,"Successfully Delete Sale:"+ salePost.getID());
-            view1Controller.changeToMainWindow(actionEvent);
+            deletionConfirmationMessage(event,"Successfully Delete Job:"+ jobPost.getID());
+            view1Controller.changeToMainWindow(event);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -129,63 +127,26 @@ public class SaleDetailsController implements Initializable {
 
 
 
-
-    public void editButtonPushed(ActionEvent actionEvent) {
+    public void editButtonPushed(ActionEvent event) {
         try {
-            openEditWindow(actionEvent);
+            openEditWindow(event);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void saveButtonPushed(ActionEvent actionEvent) {
+    //open edit window
 
-        try{
-            //save new photo update
-            if(this.newPhoto!=null) {
-                this.salePost.setPhoto(newPhoto);
-            }
-            //save updated details
-            if(salePost.getState()==true) { //if there's updated info (state=true) then update
-
-                UniLink.updateSale((Sale)salePost); //update the sale
-                salePost.setNotUpdated(); //reset the state back to false after updating
-
-            }
-
-
-            //back to main window
-            view1Controller.changeToMainWindow(actionEvent);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-    //get observableList of Reply objects for storing in table
-    public ObservableList<Reply> getReplies(){
-        ObservableList<Reply> reps= FXCollections.observableArrayList();
-        ArrayList<Reply> allReps= salePost.getArrayReply();
-
-        for(Reply reply:allReps) {
-            reps.add(reply);
-        }
-
-        return reps;
-    }
-
-    //Open edit window
     public void openEditWindow(ActionEvent event) throws IOException {
         FXMLLoader loader=new FXMLLoader();
-        loader.setLocation(getClass().getResource("/view/editSaleDetails.fxml"));
+        loader.setLocation(getClass().getResource("/view/editJobDetails.fxml"));
         Parent editWindow= loader.load();
 
         Scene editEvent= new Scene(editWindow);
 
         //access controller and call init method
-        EditSaleDetailsController controller=loader.getController();
-        controller.initData(postDetailsLabel,(Sale)salePost);
+        EditJobDetailsController controller=loader.getController();
+        controller.initData(postDetailsLabel,(Job)jobPost);
 
         //get parent stage
         Stage parent = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -207,28 +168,48 @@ public class SaleDetailsController implements Initializable {
 
         //run
         newWindow.show();
-
     }
 
 
-    //passing data from main window to this window
-    public void initData(Post post) {
-        salePost=post;
 
-        postDetailsLabel.setText(salePost.getPostDetails()); //set post details
+
+    public void saveButtonPushed(ActionEvent event) {
+        try{
+            //save new photo update
+            if(this.newPhoto!=null) {
+                this.jobPost.setPhoto(newPhoto);
+            }
+            //save updated details
+            if(jobPost.getState()==true) { //if there's updated info (state=true) then update
+
+                UniLink.updateJob((Job)jobPost);//update Job
+               jobPost.setNotUpdated(); //reset the state back to false after updating
+
+            }
+
+            //back to main window
+            view1Controller.changeToMainWindow(event);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void initData(Post post) {
+        jobPost=post;
+        postDetailsLabel.setText(jobPost.getPostDetails()); //set post details
 
         //cannot edit post if there's reply already
-        if(salePost.getArrayReply().size()>0) {
+        if(jobPost.getArrayReply().size()>0) {
             editDetails.setDisable(true);
         }
 
         //disable close button if status is close
-        if(salePost.getStatus()== Status.CLOSE) {
+        if(jobPost.getStatus()== Status.CLOSE) {
             closePost.setDisable(true);
         }
 
         //set photo
-        photo.setImage(salePost.getPhoto());
+        photo.setImage(jobPost.getPhoto());
 
         //setup table value
         replyTable.setItems(getReplies());
@@ -237,6 +218,20 @@ public class SaleDetailsController implements Initializable {
         //e.g: getResponderID, getValue
         studentColumn.setCellValueFactory(new PropertyValueFactory<Reply,String>("responderID"));
         offerColumn.setCellValueFactory(new PropertyValueFactory<Reply,Double>("value"));
+
+    }
+
+
+    //get observableList of Reply objects for storing in table
+    public ObservableList<Reply> getReplies(){
+        ObservableList<Reply> reps= FXCollections.observableArrayList();
+        ArrayList<Reply> allReps= jobPost.getArrayReply();
+
+        for(Reply reply:allReps) {
+            reps.add(reply);
+        }
+
+        return reps;
     }
 
     @Override

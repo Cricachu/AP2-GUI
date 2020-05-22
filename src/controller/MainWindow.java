@@ -112,6 +112,7 @@ public class MainWindow implements Initializable {
             }else if(post instanceof Job) {
                 bd.setStyle("-fx-background-color: #F6DCD7;");
                 replyToJob(reply,post); //click reply button to enter offer to job
+                viewJobDetails(moreDetails,post); //click More Details to view details for job
 
             } else {
                 bd.setStyle("-fx-background-color: #B5C5C5;");
@@ -436,7 +437,7 @@ public class MainWindow implements Initializable {
         window.setTitle("Event Details");
         window.show();
     }
-
+//=======================================================================
     //click a button to open Sale details window
     public void viewSaleDetails(Button button, Post post) {
 
@@ -475,5 +476,45 @@ public class MainWindow implements Initializable {
         window.setTitle("Sale Details");
         window.show();
     }
+//============================================
 
+    //click a button to open Job details window
+    public void viewJobDetails(Button button, Post post) {
+
+
+        //Create handler for open event details button
+        EventHandler<ActionEvent> evn = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                try {
+                    openJobDetailsWindow(e,post);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        };
+        //set button on action
+        button.setOnAction(evn);
+    }
+
+
+
+    //Open Job Details Window
+    public void openJobDetailsWindow (ActionEvent event,Post post) throws IOException {
+        FXMLLoader loader=new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/JobDetails.fxml"));
+        Parent eventWindow= loader.load();
+
+        Scene eventView= new Scene(eventWindow);
+
+        //access controller and call init method
+        JobDetailsController controller=loader.getController();
+        controller.initData(post);
+
+        //get the stage information
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(eventView);
+        window.setTitle("Sale Details");
+        window.show();
+    }
 }

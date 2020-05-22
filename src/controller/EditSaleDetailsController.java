@@ -81,6 +81,9 @@ public class EditSaleDetailsController {
     }
 
     public void cancelButtonHandle(ActionEvent actionEvent) {
+        Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+
+        window.close();
     }
 
 
@@ -99,6 +102,7 @@ public class EditSaleDetailsController {
         labelField=label;
         sale=spost;
 
+        //setup existing data for fields
         titleField.setText(sale.getTitle());
         descriptionField.setText(sale.getDescription());
         askingPriceField.setText(Double.toString(sale.getAskingPrice()));

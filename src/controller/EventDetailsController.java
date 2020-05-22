@@ -220,5 +220,47 @@ public class EventDetailsController implements Initializable {
 
         eventDetailsLabel.setText("deleted");
         view1Controller.uni.deletePost(eventt);
+
+        try {
+
+            deletionConfirmationMessage(actionEvent,"Successfully Delete Event:"+ eventt.getID());
+            view1Controller.changeToMainWindow(actionEvent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    //open new window to show message after delete event
+    public void deletionConfirmationMessage(ActionEvent actionEvent,String message) throws IOException {
+        FXMLLoader loader=new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/SaleReplyMessage.fxml"));
+        Parent messageWindow= loader.load();
+
+        Scene messageView= new Scene(messageWindow);
+
+        //get parent stage
+        Stage parent = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+
+//        //get the controller and call the init method to pass message
+        SaleReplyMessageController controller=loader.getController();
+        controller.initData(message);
+
+        // New window (Stage)
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Delete Confirm");
+        newWindow.setScene(messageView);
+
+        // Specifies the modality for new window.
+        newWindow.initModality(Modality.WINDOW_MODAL);
+
+        // Specifies the owner Window (parent) for new window
+        newWindow.initOwner(parent);
+
+        //set position of new window
+        newWindow.setX(parent.getX()+parent.getWidth()/4);
+        newWindow.setY(parent.getY()+parent.getHeight()/4);
+        //run
+        newWindow.show();
+    }
+
 }
