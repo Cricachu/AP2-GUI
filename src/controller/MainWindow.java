@@ -111,10 +111,12 @@ public class MainWindow implements Initializable {
 
             }else if(post instanceof Job) {
                 bd.setStyle("-fx-background-color: #F6DCD7;");
+                replyToJob(reply,post); //click reply button to enter offer to job
 
             } else {
                 bd.setStyle("-fx-background-color: #B5C5C5;");
-                ReplyToSale(reply,post);
+                ReplyToSale(reply,post);//click reply button to enter offer to sale
+                viewSaleDetails(moreDetails,post); //click More Details to view details for sale
             }
 
             buttons.getChildren().addAll(reply,moreDetails);
@@ -276,7 +278,65 @@ public class MainWindow implements Initializable {
                 updateList();
             }});
     }
+//===================================================
 
+    //click reply button to reply to job
+    public void replyToJob(Button button,Post post) {
+        EventHandler<ActionEvent> evn = new EventHandler<ActionEvent>()  {
+            public void handle(ActionEvent e)
+            {
+                try {
+                    openNewJobOfferWindow(e,post); //open new window for entering sale offer
+                } catch (Exception ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        };
+        //set button on action
+        button.setOnAction(evn);
+    }
+
+    //Open new window for entering new job offer
+    public void openNewJobOfferWindow(ActionEvent actionEvent,Post post) throws IOException {
+        FXMLLoader loader=new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/newJobOffer.fxml"));
+        Parent messageWindow= loader.load();
+
+        Scene messageView= new Scene(messageWindow);
+
+        //get parent stage
+        Stage parent = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+
+        //access controller and call init method
+        NewJobOfferController controller=loader.getController();
+        controller.initData((Job)post);
+
+        // New window (Stage)
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Enter Offer");
+        newWindow.setScene(messageView);
+
+        // Specifies the modality for new window.
+        newWindow.initModality(Modality.WINDOW_MODAL);
+
+        // Specifies the owner Window (parent) for new window
+        newWindow.initOwner(parent);
+
+        //set position of new window
+        newWindow.setX(parent.getX()+parent.getWidth()/4);
+        newWindow.setY(parent.getY()+parent.getHeight()/4);
+        //run
+        newWindow.show();
+
+        newWindow.setOnCloseRequest(new EventHandler<WindowEvent>(){
+
+            //update post listview when close reply window
+            public void handle(WindowEvent we) {
+                updateList();
+            }});
+    }
+
+//=========================================================
 
     //  //Click Reply button to reply to Event
     public void viewReplyMessageEvent(Button button,Post post) {
@@ -335,6 +395,7 @@ public class MainWindow implements Initializable {
         newWindow.show();
     }
 
+//=====================================================================
 
     //Click a button to open EventDetailsWindow
     public void viewEventDetails(Button button,Post post) {
@@ -376,6 +437,43 @@ public class MainWindow implements Initializable {
         window.show();
     }
 
+    //click a button to open Sale details window
+    public void viewSaleDetails(Button button, Post post) {
 
+
+        //Create handler for open event details button
+        EventHandler<ActionEvent> evn = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                try {
+                    openSaleDetailsWindow(e,post);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        };
+        //set button on action
+        button.setOnAction(evn);
+    }
+
+
+    //Open Sale Details Window
+    public void openSaleDetailsWindow (ActionEvent event, Post post) throws IOException {
+        FXMLLoader loader=new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/SaleDetails.fxml"));
+        Parent eventWindow= loader.load();
+
+        Scene eventView= new Scene(eventWindow);
+
+        //access controller and call init method
+        SaleDetailsController controller=loader.getController();
+        controller.initData(post);
+
+        //get the stage information
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(eventView);
+        window.setTitle("Sale Details");
+        window.show();
+    }
 
 }

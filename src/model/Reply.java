@@ -30,6 +30,10 @@ public class Reply {
         return this.value;
     }
 
+    public double getValue() {
+        return this.value;
+    }
+
     public void setReplyID(String id) {
         this.replyID=id;
     }

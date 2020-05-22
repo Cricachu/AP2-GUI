@@ -3,6 +3,7 @@ package controller;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,8 +18,10 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class NewJobFormController {
+public class NewJobFormController implements Initializable {
 
     @FXML private TextField proposedPriceField;
     @FXML private ImageView imageView;
@@ -75,5 +78,10 @@ public class NewJobFormController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        selectedPhoto=new Image("/images/default.jpeg");
     }
 }

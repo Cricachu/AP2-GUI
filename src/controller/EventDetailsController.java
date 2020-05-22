@@ -73,6 +73,7 @@ public class EventDetailsController implements Initializable {
             editDetails.setDisable(true);
         }
 
+        //disable close button if status is close
         if(eventt.getStatus()== Status.CLOSE) {
             closePost.setDisable(true);
         }
