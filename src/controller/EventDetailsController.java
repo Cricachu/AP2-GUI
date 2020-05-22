@@ -216,24 +216,21 @@ public class EventDetailsController implements Initializable {
     }
 
     public void deleteButtonPushed(ActionEvent actionEvent) {
-        UniLink.testInfo(eventt);
-
-        eventDetailsLabel.setText("deleted");
-        view1Controller.uni.deletePost(eventt);
 
         try {
 
-            deletionConfirmationMessage(actionEvent,"Successfully Delete Event:"+ eventt.getID());
-            view1Controller.changeToMainWindow(actionEvent);
+            deletionConfirmationMessage(actionEvent,eventt);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     //open new window to show message after delete event
-    public void deletionConfirmationMessage(ActionEvent actionEvent,String message) throws IOException {
+    public void deletionConfirmationMessage(ActionEvent actionEvent,Post post) throws IOException {
         FXMLLoader loader=new FXMLLoader();
-        loader.setLocation(getClass().getResource("/view/SaleReplyMessage.fxml"));
+        loader.setLocation(getClass().getResource("/view/DeleteConfirmation.fxml"));
         Parent messageWindow= loader.load();
 
         Scene messageView= new Scene(messageWindow);
@@ -242,8 +239,8 @@ public class EventDetailsController implements Initializable {
         Stage parent = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
 //        //get the controller and call the init method to pass message
-        SaleReplyMessageController controller=loader.getController();
-        controller.initData(message);
+        DeleteConfirmationController controller=loader.getController();
+        controller.initData(post);
 
         // New window (Stage)
         Stage newWindow = new Stage();
@@ -261,6 +258,20 @@ public class EventDetailsController implements Initializable {
         newWindow.setY(parent.getY()+parent.getHeight()/4);
         //run
         newWindow.show();
+
+        newWindow.setOnCloseRequest(new EventHandler<WindowEvent>(){
+
+            //change to main window if select "ok" to delete
+            public void handle(WindowEvent we) {
+                if(view1Controller.uni.getChangeToMainWindowStatus()) {
+                    try {
+                        view1Controller.changeToMainWindow(actionEvent);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    view1Controller.uni.setChangeToMainWindowtoFalse();
+                }
+            }});
     }
 
 }

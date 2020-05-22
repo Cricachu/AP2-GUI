@@ -30,8 +30,23 @@ public class UniLink {
     private static String jobDesc;
     private static double jobProsPrice;
 
+    private boolean changeToMainWindow;
+
     static ArrayList<Post> allPosts = new ArrayList<Post>();
 
+    public void setChangeToMainWindowtoTrue() {
+        this.changeToMainWindow=true;
+        System.out.println(changeToMainWindow);
+    }
+
+    public void setChangeToMainWindowtoFalse() {
+        this.changeToMainWindow=false;
+        System.out.println(changeToMainWindow);
+    }
+
+    public boolean getChangeToMainWindowStatus() {
+        return this.changeToMainWindow;
+    }
     //store updated information when user updates a Job
     public static void passNewJobInfo(String jtitle,String jdec,double jpros) {
         jobTitle=jtitle;
