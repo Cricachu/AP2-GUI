@@ -37,7 +37,7 @@ public class NewJobOfferController {
 
         } catch(NumberFormatException e) {
             //when the input format is wrong
-            messageLabel.setText(e.getMessage());
+            messageLabel.setText("You must enter a number");
         } catch (Exception e) {
             //when offer is higher than highest offer
             messageLabel.setText(e.getMessage());

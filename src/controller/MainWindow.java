@@ -11,7 +11,10 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -40,6 +43,16 @@ import model.utilities.Status;
 import static java.awt.Color.BLACK;
 
 public class MainWindow implements Initializable {
+
+    //filter buttons
+    @FXML private ComboBox typeCombo;
+    @FXML private ComboBox statusCombo;
+    @FXML private ComboBox creatorCombo;
+    private String selectedType;
+    private String selectedStatus;
+    private String selectedCreator;
+
+    //others
     @FXML private Button logOutButton;
     @FXML private Button newEventbtn;
     @FXML private ListView postList;
@@ -52,18 +65,27 @@ public class MainWindow implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
             studentIDTitle.setText("Welcome,student:"+view1Controller.userId);
+            selectedType="All";
+            selectedStatus="All";
+            selectedCreator="All";
+
+            typeCombo.getItems().addAll("All","Event","Sale","Job");
+            statusCombo.getItems().addAll("All","Open","Closed");
+            creatorCombo.getItems().addAll("All", "Me");
+
             updateList();
 
     }
 
     public void updateList() {
+        //clear the list before update it
         try{
             if(postList.getItems()!=null) postList.getItems().clear();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
+        //start updating the post list
         ArrayList<Post> allPosts= view1Controller.uni.getAllPosts();
         for(Post post:allPosts) {
             BorderPane bd= new BorderPane();
@@ -516,5 +538,157 @@ public class MainWindow implements Initializable {
         window.setScene(eventView);
         window.setTitle("Sale Details");
         window.show();
+    }
+
+    public void typeBoxHandle(ActionEvent event) {
+        selectedType=typeCombo.getValue().toString();
+        updateFilteredPost();
+    }
+
+    public void statusBoxHandle(ActionEvent event) {
+        selectedStatus=statusCombo.getValue().toString();
+        updateFilteredPost();
+    }
+
+    public void creatorBoxHandle(ActionEvent event) {
+        selectedCreator=creatorCombo.getValue().toString();
+        updateFilteredPost();
+    }
+
+    public void updateFilteredPost() {
+        //clear the list before update it
+        try{
+            if(postList.getItems()!=null) postList.getItems().clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //start updating the post list
+        ArrayList<Post> allPosts= (ArrayList<Post>) getPost(selectedType,selectedStatus,selectedCreator);
+        for(Post post:allPosts) {
+            BorderPane bd= new BorderPane();
+
+            //setup image
+            Image photo= post.getPhoto();
+            ImageView image= new ImageView(photo);
+            image.setFitHeight(180);
+            image.setFitWidth(180);
+            image.setPreserveRatio(true);
+
+            //set content of the post
+            Label details= new Label();
+            details.setText(post.getPostDetails());
+            details.setPadding(new Insets(0,0,0,10));
+
+            //set buttons
+            HBox buttons= new HBox();
+            buttons.setAlignment(Pos.CENTER);
+
+            Button reply= new Button();
+            reply.setText("Reply");
+            //post creator cannot reply to their own post
+            if(post.getCreatorId().compareTo(view1Controller.userId)==0||post.getStatus()!= Status.OPEN) {
+                reply.setDisable(true);
+            }
+
+            Button moreDetails= new Button();
+            moreDetails.setText("More Details");
+            //only post creator can view more details of post
+            if(post.getCreatorId().compareTo(view1Controller.userId)!=0) {
+                moreDetails.setDisable(true);
+            }
+
+            if(post instanceof Event) {
+                bd.setStyle("-fx-background-color: #FFFFFF;");
+                reply.setText("Join");
+                viewReplyMessageEvent(reply,post); //click reply button to join the Event
+                viewEventDetails(moreDetails,post); //click "more details" button to view Event details
+
+                //user cannot reply to an event twice
+                if(((Event) post).getAttendees().contains(view1Controller.userId)) {
+                    reply.setDisable(true);
+                }
+
+            }else if(post instanceof Job) {
+                bd.setStyle("-fx-background-color: #F6DCD7;");
+                replyToJob(reply,post); //click reply button to enter offer to job
+                viewJobDetails(moreDetails,post); //click More Details to view details for job
+
+            } else {
+                bd.setStyle("-fx-background-color: #B5C5C5;");
+                ReplyToSale(reply,post);//click reply button to enter offer to sale
+                viewSaleDetails(moreDetails,post); //click More Details to view details for sale
+            }
+
+            buttons.getChildren().addAll(reply,moreDetails);
+            buttons.setSpacing(20);
+            buttons.setPadding(new Insets(50));
+
+            //add all contents to border pane
+            bd.setLeft(image);
+            bd.setCenter(details);
+            BorderPane.setAlignment(details,Pos.CENTER_LEFT);
+            bd.setRight(buttons);
+
+            //add border pane to list item
+            postList.getItems().add(bd);
+        }
+
+    }
+
+    public List<Post> getPost(String type, String status, String creator) {
+        ArrayList <Post> nonFilteredPosts=view1Controller.uni.getAllPosts();
+
+        List<Post> result = new ArrayList<Post>();
+
+        //filter by creator
+        if (creator.compareTo("All") == 0) {
+            result = nonFilteredPosts;
+        } else {
+            result = nonFilteredPosts
+                    .stream()
+                    .filter(post -> post.getCreatorId().compareTo(view1Controller.userId) == 0)
+                    .collect(Collectors.toList());
+
+        }
+
+        //filter by Type
+        if (type.compareTo("Event") == 0) {
+            result = result
+                    .stream()
+                    .filter(post -> post instanceof Event)
+                    .collect(Collectors.toList());
+        } else if (type.compareTo("Sale") == 0) {
+            result = result
+                    .stream()
+                    .filter(post -> post instanceof Sale)
+                    .collect(Collectors.toList());
+        } else if (type.compareTo("Job") == 0) {
+            result = result
+                    .stream()
+                    .filter(post -> post instanceof Job)
+                    .collect(Collectors.toList());
+        } else if(type.compareTo("All")==0) {
+            result=result;
+        }
+
+        //filter by Status
+        if (status.compareTo("All")==0) {
+            result=result;
+        } else if (status.compareTo("Open")==0) {
+            result=result
+                    .stream()
+                    .filter(post -> post.getStatus()== Status.OPEN)
+                    .collect(Collectors.toList());
+
+        }else if (status.compareTo("Closed")==0) {
+            result = result
+                    .stream()
+                    .filter(post -> post.getStatus() == Status.CLOSE)
+                    .collect(Collectors.toList());
+
+        }
+        return result;
+
     }
 }

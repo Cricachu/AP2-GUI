@@ -37,7 +37,7 @@ public class NewSaleOfferController {
         System.out.println(post.getHighestOffer());
         System.out.println(post.getMinimumRaise());
         System.out.print("difference:");
-        System.out.println( Double.parseDouble(offer)-post.getHighestOffer());
+//        System.out.println( Double.parseDouble(offer)-post.getHighestOffer());
 
 
         try{
@@ -67,7 +67,7 @@ public class NewSaleOfferController {
 
         }catch(NumberFormatException e) {
             //when the input format is wrong
-            messageLabel.setText(e.getMessage());
+            messageLabel.setText("You must enter a number");
         } catch (Exception ee) {
             ee.printStackTrace();
         }
