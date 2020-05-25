@@ -70,7 +70,7 @@ public class NewEventFormController implements Initializable {
         fileChooser=new FileChooser();
         fileChooser.setTitle("Open Image");
         this.filePath=fileChooser.showOpenDialog(stage);
-
+//        System.out.println(filePath.getName());
         //update the image
         try{
             BufferedImage bufferedImage= ImageIO.read(filePath);

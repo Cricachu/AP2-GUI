@@ -4,16 +4,17 @@ import javafx.scene.image.Image;
 import model.exceptions.ValueException;
 import model.utilities.Status;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract  class Post {
+public abstract  class Post implements Serializable {
     private String ID;
     private String title;
     private String description;
     private String creatorID;
     private ArrayList<Reply> replies;
     private Status status;
-    private Image photo;
+    private transient Image photo;
     private String imageName;
     private boolean updated=false;
 
@@ -56,6 +57,12 @@ public abstract  class Post {
 
 
     //accessors/mutators
+    public String getImageName(){
+        return this.imageName;
+    }
+    public void setImageName(String path) {
+        imageName=path;
+    }
     public Image getPhoto(){
         return photo;
     }

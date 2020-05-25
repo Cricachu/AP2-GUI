@@ -1,6 +1,8 @@
 package model;
 
-public class Reply {
+import java.io.Serializable;
+
+public class Reply implements Serializable {
     private String replyID;
     private static int count;
     private String postID;

@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import java.awt.*;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +33,8 @@ import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.stage.*;
 import javafx.stage.Window;
-import javafx.stage.WindowEvent;
 import model.*;
 import model.Event;
 import model.exceptions.FormatException;
@@ -63,6 +61,10 @@ public class MainWindow implements Initializable {
     @FXML private HBox titleCentre;
     @FXML private Label studentIDTitle;
 
+    //for import/export
+    private FileChooser fileChooser;
+    private File filePath;
+    private DirectoryChooser directoryChooser;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -710,7 +712,7 @@ public class MainWindow implements Initializable {
 
         Scene messageView= new Scene(eventWindow);
 
-        //get parent stage
+        //get parent stage for menu item
         Window parent = ((MenuItem)event.getTarget()).getParentPopup().getScene().getWindow();
 
         // New window (Stage)
@@ -739,8 +741,107 @@ public class MainWindow implements Initializable {
     }
 
     public void exportHandle(ActionEvent event) {
+        Window parent = ((MenuItem)event.getTarget()).getParentPopup().getScene().getWindow();
+        directoryChooser=new DirectoryChooser();
+        directoryChooser.setTitle("Select Directory");
+        this.filePath=directoryChooser.showDialog(parent);
+        System.out.println(filePath.getAbsolutePath());
+        exportFile(filePath.getAbsolutePath().toString());
+
+    }
+    public void exportFile(String directory) {
+        try {
+            ObjectOutputStream output = new ObjectOutputStream
+                    (new FileOutputStream(directory+"\\export_data.txt"));
+
+//            List<Post> allPosts =view1Controller.uni.getAllPosts();
+//
+//            output.writeObject(allPosts);
+            for (Post post:view1Controller.uni.getAllPosts()) {
+                    output.writeObject(post);
+
+            }
+            output.close();
+            System.out.println("Objects sent to file.\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void importHandle(ActionEvent event) {
+        Window parent = ((MenuItem)event.getTarget()).getParentPopup().getScene().getWindow();
+        fileChooser=new FileChooser();
+        fileChooser.setTitle("Open Image");
+        this.filePath=fileChooser.showOpenDialog(parent);
+
+        //import file
+        importFile(filePath.getPath());
     }
 
-    public void importHandle(ActionEvent event) {
+
+    public void importFile(String filePath) {
+        try {
+            ObjectInputStream input = new ObjectInputStream
+                    (new FileInputStream(filePath));
+
+//            Post post= null;
+
+
+            while(true) {
+//                uni.getAllPosts().add((Post) input.readObject());
+//                System.out.println("Added post");
+                Post post= (Post) input.readObject();
+                ArrayList<Reply>  allReps=post.getArrayReply();
+                String title=post.getTitle();
+                String des=post.getDescription();
+                String creator=post.getCreatorId();
+                if (post instanceof Event) {
+                    String date=((Event) post).getDate();
+                    String venue=((Event) post).getVenue();
+                    int capa=((Event) post).getCapacity();
+
+                    Event event= new Event(creator,title,des,venue,date,capa);
+                    for(Reply reply:allReps) {
+                        String replier=reply.getResponderID();
+                        String postId=reply.getPostId();
+                        double value=reply.getPostValue();
+                        Reply rep= new Reply(postId,value,replier);
+                        event.handleReply(rep);
+
+                    }
+                    view1Controller.uni.getAllPosts().add(event);
+                } else if(post instanceof Sale) {
+                    double ask=((Sale) post).getAskingPrice();
+                    double min=((Sale) post).getMinimumRaise();
+
+                    Sale sale=new Sale(creator,title,des,ask,min);
+                    for(Reply reply:allReps) {
+                        String replier=reply.getResponderID();
+                        String postId=reply.getPostId();
+                        double value=reply.getPostValue();
+                        Reply rep= new Reply(postId,value,replier);
+                        sale.getArrayReply().add(rep);
+                    }
+                    view1Controller.uni.getAllPosts().add(sale);
+                } else if(post instanceof Job) {
+                    double pros=((Job) post).getProposedPrice();
+
+                    Job job=new Job(creator,title,des,pros);
+                    for(Reply reply:allReps) {
+                        String replier=reply.getResponderID();
+                        String postId=reply.getPostId();
+                        double value=reply.getPostValue();
+                        Reply rep= new Reply(postId,value,replier);
+                        job.getArrayReply().add(rep);
+                    }
+                    view1Controller.uni.getAllPosts().add(job);
+                }
+
+                updateList();
+            }
+
+//            input.close();
+        } catch (IOException | ClassNotFoundException e) {
+//            e.printStackTrace();
+        }
     }
 }
