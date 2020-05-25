@@ -783,17 +783,16 @@ public class MainWindow implements Initializable {
             ObjectInputStream input = new ObjectInputStream
                     (new FileInputStream(filePath));
 
-//            Post post= null;
-
-
             while(true) {
 //                uni.getAllPosts().add((Post) input.readObject());
 //                System.out.println("Added post");
                 Post post= (Post) input.readObject();
                 ArrayList<Reply>  allReps=post.getArrayReply();
+
                 String title=post.getTitle();
                 String des=post.getDescription();
                 String creator=post.getCreatorId();
+
                 if (post instanceof Event) {
                     String date=((Event) post).getDate();
                     String venue=((Event) post).getVenue();
@@ -812,20 +811,26 @@ public class MainWindow implements Initializable {
                 } else if(post instanceof Sale) {
                     double ask=((Sale) post).getAskingPrice();
                     double min=((Sale) post).getMinimumRaise();
+                    double highest=((Sale) post).getHighestOffer();
 
                     Sale sale=new Sale(creator,title,des,ask,min);
+                    sale.setHighestOffer(highest);
                     for(Reply reply:allReps) {
                         String replier=reply.getResponderID();
                         String postId=reply.getPostId();
                         double value=reply.getPostValue();
                         Reply rep= new Reply(postId,value,replier);
                         sale.getArrayReply().add(rep);
+//                        System.out.println(reply.getResponderID()+ ":"+ reply.getPostValue());
                     }
                     view1Controller.uni.getAllPosts().add(sale);
                 } else if(post instanceof Job) {
                     double pros=((Job) post).getProposedPrice();
+                    double lowest=((Job) post).getLowestOffer();
 
                     Job job=new Job(creator,title,des,pros);
+                    job.setLowestOffer(lowest);
+                    
                     for(Reply reply:allReps) {
                         String replier=reply.getResponderID();
                         String postId=reply.getPostId();
