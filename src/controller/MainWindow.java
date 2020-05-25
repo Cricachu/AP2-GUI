@@ -1,7 +1,9 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -33,6 +35,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import model.*;
 import model.Event;
@@ -224,7 +227,7 @@ public class MainWindow implements Initializable {
     public void logOutButtonHandle(ActionEvent actionEvent) {
         try {
             openLogInWindow(actionEvent);
-            view1Controller.uni.writeToDatabase();
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -690,5 +693,54 @@ public class MainWindow implements Initializable {
         }
         return result;
 
+    }
+
+    public void developerHandle(ActionEvent event) {
+        try {
+            openDeveloperInfoWindow(event);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openDeveloperInfoWindow (ActionEvent event) throws IOException {
+        FXMLLoader loader=new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/DeveloperInfo.fxml"));
+        Parent eventWindow= loader.load();
+
+        Scene messageView= new Scene(eventWindow);
+
+        //get parent stage
+        Window parent = ((MenuItem)event.getTarget()).getParentPopup().getScene().getWindow();
+
+        // New window (Stage)
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Developer Info");
+        newWindow.setScene(messageView);
+
+        // Specifies the modality for new window.
+        newWindow.initModality(Modality.WINDOW_MODAL);
+
+        // Specifies the owner Window (parent) for new window
+        newWindow.initOwner(parent);
+
+        //set position of new window
+        newWindow.setX(parent.getX()+200);
+        newWindow.setY(parent.getY()+200);
+        //run
+        newWindow.show();
+    }
+
+
+    public void quitHandle(ActionEvent event) {
+        view1Controller.uni.writeToDatabase();
+        Platform.exit();
+        System.exit(0);
+    }
+
+    public void exportHandle(ActionEvent event) {
+    }
+
+    public void importHandle(ActionEvent event) {
     }
 }
